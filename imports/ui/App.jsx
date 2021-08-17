@@ -5,6 +5,7 @@ import { ChallengeForm } from "./ChallengeForm"
 import { Challenge } from "./Challenge"
 import { LoginForm } from "./LoginForm"
 import { SignupForm } from "./SignupForm"
+import { Rooms } from "./Rooms"
 
 const toggleComplete = ({ _id, isCompleted }) =>
   Meteor.call("challenges.setCompleted", _id, !isCompleted)
@@ -40,6 +41,7 @@ export const App = () => {
       <h1>Challenges {pendingChallengeCount} </h1>
       {user ? (
         <>
+          <Rooms />
           <button onClick={logout}>Logout</button>
           <ChallengeForm />
           <button onClick={() => setShowCompleted(!showCompleted)}>
