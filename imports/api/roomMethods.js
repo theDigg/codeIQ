@@ -14,6 +14,7 @@ Meteor.methods({
       createdAt: new Date(),
       lobby: [this.userId],
       userId: this.userId,
+      challenge: ''
     })
   },
 
@@ -43,7 +44,7 @@ Meteor.methods({
       throw new Meteor.Error("Not authorized.")
     }
 
-    const room = RoomsCollection.findOne({
+    let room = RoomsCollection.findOne({
       _id: roomId,
     })
 
@@ -56,6 +57,18 @@ Meteor.methods({
         lobby: [...room.lobby, this.userId],
       },
     })
+
+    room = RoomsCollection.findOne({
+      _id: roomId,
+    })
+
+    if (room.lobby.length > 1) {
+      RoomsCollection.update(roomId, {
+        $set: {
+          challenge: 'Hello World',
+        },
+      })
+    }
   },
 
   "rooms.leave"(roomId) {
@@ -75,7 +88,7 @@ Meteor.methods({
 
     RoomsCollection.update(roomId, {
       $set: {
-        lobby: room.lobby.filter(userId => userId !== this.userId),
+        lobby: room.lobby.filter((userId) => userId !== this.userId),
       },
     })
   },

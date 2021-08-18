@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor"
 import { Accounts } from "meteor/accounts-base"
 import { ChallengesCollection } from "/imports/db/challenges"
 import { RoomsCollection } from "/imports/db/rooms"
+import { seedChallenges } from "/imports/db/seedChallenges"
 import "/imports/api/challengeMethods"
 import "/imports/api/roomMethods"
 import "./service-config"
@@ -35,16 +36,8 @@ Meteor.startup(() => {
 
   const user = Accounts.findUserByUsername(SEED_USERNAME)
 
-  if (ChallengesCollection.find().count() === 0) {
-    ;[
-      "First Challenge",
-      "Second Challenge",
-      "Third Challenge",
-      "Fourth Challenge",
-      "Fifth Challenge",
-      "Sixth Challenge",
-      "Seventh Challenge",
-    ].forEach((title) => insertChallenge(title, user))
+  if (ChallengesCollection.find().count() !== 6) {
+    seedChallenges()
   }
 
   if (RoomsCollection.find().count() === 0) {

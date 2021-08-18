@@ -24,3 +24,4 @@ dev-error-overlay
 accounts-password
 accounts-github
 service-configuration
+session
