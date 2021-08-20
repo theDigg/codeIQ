@@ -1,24 +1,24 @@
-import { Meteor } from "meteor/meteor"
-import React, { useState } from "react"
+import { Meteor } from 'meteor/meteor';
+import React, { useState } from 'react';
 
-export const SignupForm = () => {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+export default () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const submit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     Meteor.loginWithGithub(
       {
-        requestPermissions: ["user", "public_repo"],
+        requestPermissions: ['user', 'public_repo'],
       },
       (error) => {
         if (error) {
-          console.log(error)
+          console.log(error);
         }
       }
-    )
-  }
+    );
+  };
 
   return (
     <form onSubmit={submit} className="login-form">
@@ -44,5 +44,5 @@ export const SignupForm = () => {
 
       <button type="submit">Sign up</button>
     </form>
-  )
-}
+  );
+};

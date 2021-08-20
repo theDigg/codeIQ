@@ -1,95 +1,84 @@
-import { check } from "meteor/check"
-import { RoomsCollection } from "../db/rooms"
+import { Meteor } from 'meteor/meteor';
+import { check } from 'meteor/check';
+import RoomsCollection from '../db/rooms';
+import ChallengesCollection from '../db/challenges';
 
 Meteor.methods({
-  "rooms.insert"(title) {
-    check(title, String)
+  'rooms.insert'(title) {
+    check(title, String);
 
-    if (!this.userId) {
-      throw new Meteor.Error("Not authorized.")
-    }
+    if (!this.userId) throw new Meteor.Error('Not authorized.');
 
     RoomsCollection.insert({
       title,
       createdAt: new Date(),
       lobby: [this.userId],
       userId: this.userId,
-      challenge: ''
-    })
+      challenge: '',
+    });
   },
 
-  "rooms.remove"(roomId) {
-    check(roomId, String)
+  'rooms.remove'(roomId) {
+    check(roomId, String);
 
-    if (!this.userId) {
-      throw new Meteor.Error("Not authorized.")
-    }
+    if (!this.userId) throw new Meteor.Error('Not authorized.');
 
     const room = RoomsCollection.findOne({
       _id: roomId,
       //   userId: this.userId,
-    })
+    });
 
-    if (!room) {
-      throw new Meteor.Error("Access denied.")
-    }
+    if (!room) throw new Meteor.Error('Access denied.');
 
-    RoomsCollection.remove(roomId)
+    RoomsCollection.remove(roomId);
   },
 
-  "rooms.join"(roomId) {
-    check(roomId, String)
+  'rooms.join'(roomId) {
+    check(roomId, String);
 
-    if (!this.userId) {
-      throw new Meteor.Error("Not authorized.")
-    }
+    if (!this.userId) throw new Meteor.Error('Not authorized.');
 
     let room = RoomsCollection.findOne({
       _id: roomId,
-    })
+    });
 
-    if (!room) {
-      throw new Meteor.Error("Access denied.")
-    }
+    if (!room) throw new Meteor.Error('Access denied.');
 
     RoomsCollection.update(roomId, {
       $set: {
         lobby: [...room.lobby, this.userId],
       },
-    })
+    });
 
     room = RoomsCollection.findOne({
       _id: roomId,
-    })
+    });
 
     if (room.lobby.length > 1) {
+      const challengeCount = ChallengesCollection.find({}).count();
+      const randomNum = Math.floor((challengeCount * Math.random()))
+      const challenge = ChallengesCollection.find({}).fetch()[randomNum]
       RoomsCollection.update(roomId, {
         $set: {
-          challenge: 'Hello World',
+          challenge,
         },
-      })
+      });
     }
   },
 
-  "rooms.leave"(roomId) {
-    check(roomId, String)
+  'rooms.leave'(roomId) {
+    check(roomId, String);
 
-    if (!this.userId) {
-      throw new Meteor.Error("Not authorized.")
-    }
+    if (!this.userId) throw new Meteor.Error('Not authorized.');
 
-    const room = RoomsCollection.findOne({
-      _id: roomId,
-    })
+    const room = RoomsCollection.findOne({ _id: roomId });
 
-    if (!room) {
-      throw new Meteor.Error("Access denied.")
-    }
+    if (!room) throw new Meteor.Error('Access denied.');
 
     RoomsCollection.update(roomId, {
       $set: {
         lobby: room.lobby.filter((userId) => userId !== this.userId),
       },
-    })
+    });
   },
-})
+});

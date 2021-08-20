@@ -1,17 +1,18 @@
-import React, { useState } from "react"
+import React, { useState } from 'react';
+import { Meteor } from 'meteor/meteor';
 
-export const ChallengeForm = () => {
-  const [title, setTitle] = useState("")
+export default () => {
+  const [title, setTitle] = useState('');
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!title) return
+    if (!title) return;
 
-    Meteor.call("challenges.insert", title)
+    Meteor.call('challenges.insert', title);
 
-    setTitle("")
-  }
+    setTitle('');
+  };
 
   return (
     <form className="challenge-form" onSubmit={handleSubmit}>
@@ -24,5 +25,5 @@ export const ChallengeForm = () => {
 
       <button type="submit">Add Challenge</button>
     </form>
-  )
-}
+  );
+};
