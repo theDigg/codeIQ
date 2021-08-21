@@ -8,13 +8,6 @@ import '/imports/api/roomMethods';
 import '/imports/api/roomPublications';
 import './service-config';
 
-// const insertChallenge = (title, user) =>
-//   ChallengesCollection.insert({
-//     title,
-//     userId: user._id,
-//     createdAt: Date.now(),
-//   });
-
 const insertRoom = (title, user, url) => {
   RoomsCollection.insert({
     title,

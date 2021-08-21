@@ -1,13 +1,12 @@
 import React from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
-import Editor from '@monaco-editor/react';
 
 export default ({ topLeft, topRight, bottomLeft, bottomRight }) => {
   return (
-    <ReflexContainer orientation="vertical" style={{ height: '100vh' }}>
+    <ReflexContainer orientation="vertical" style={{ height: '93vh' }}>
       <ReflexElement>
         <ReflexContainer orientation="horizontal">
-          <ReflexElement propagateDimensionsRate={200} propagateDimensions={true} flex={0.8}>
+          <ReflexElement propagateDimensionsRate={200} propagateDimensions={true} flex={0.5}>
             <div className="pane-content">
               {/* <label>Top Left Pane</label> */}
               {topLeft}
@@ -27,9 +26,9 @@ export default ({ topLeft, topRight, bottomLeft, bottomRight }) => {
 
       <ReflexSplitter />
 
-      <ReflexElement className="right-pane" flex={0.2}>
+      <ReflexElement className="right-pane" flex={0.5}>
         <ReflexContainer orientation="horizontal">
-          <ReflexElement propagateDimensionsRate={200} propagateDimensions={true} flex={0.8}>
+          <ReflexElement propagateDimensionsRate={200} propagateDimensions={true} flex={0.5}>
             <div className="pane-content">
               {/* <label> Top Right Pane </label> */}
               {topRight}

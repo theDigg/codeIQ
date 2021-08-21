@@ -25,7 +25,7 @@ Meteor.methods({
 
     const room = RoomsCollection.findOne({
       _id: roomId,
-      //   userId: this.userId,
+      // userId: this.userId,
     });
 
     if (!room) throw new Meteor.Error('Access denied.');

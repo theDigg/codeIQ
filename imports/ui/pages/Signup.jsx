@@ -1,5 +1,6 @@
-import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
+import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 
 export default () => {
   const [username, setUsername] = useState('');
@@ -22,7 +23,8 @@ export default () => {
 
   const submit = (e) => {
     e.preventDefault();
-    Meteor.loginWithPassword(username, password);
+    Accounts.createUser({username, password}, console.log);
+    Meteor.loginWithPassword(username, password)
   };
 
   return (
