@@ -1,10 +1,3 @@
-import React, { useState } from 'react';
-import Editor from '../Components/CodeEditor';
-import EditorOptions from '../settings/editorSettings.json';
-import { setSettings } from '../features/settings/settingsSlice';
-import { useDispatch } from 'react-redux';
-
-const settings = `
 {
   "acceptSuggestionOnCommitCharacter": true,
   "acceptSuggestionOnEnter": "on",
@@ -69,26 +62,4 @@ const settings = `
   "smoothScrolling": false,
   "snippetSuggestions": true,
   "theme": "vs-dark"
-}
-`
-
-export default function SettingsPage() {
-  const [editorSettings, setEditorSettings] = useState(settings);
-  const dispatch = useDispatch();
-  function handleEditorChange(value, event) {
-    setEditorSettings(value);
-  }
-  return (
-    <div>
-      <h1> Settings </h1>
-      <button
-        onClick={() => {
-          dispatch(setSettings(JSON.parse(editorSettings)));
-        }}
-      >
-        SAVE SETTINGS
-      </button>
-      <Editor handleEditorChange={handleEditorChange} solution={editorSettings} lang="json" />
-    </div>
-  );
 }

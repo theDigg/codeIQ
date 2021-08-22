@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialEditorSettings = localStorage.getItem('editorSettings') ? JSON.parse(localStorage.getItem('editorSettings')) : {};
+
 const initialState = {
-  editorSettings: {},
+  editorSettings: initialEditorSettings,
 };
 
 export const settingsSlice = createSlice({
@@ -9,7 +11,8 @@ export const settingsSlice = createSlice({
   initialState,
   reducers: {
     setSettings: (state, action) => {
-      state.settings = action.payload;
+      state.editorSettings = action.payload;
+      localStorage.setItem('editorSettings', JSON.stringify(action.payload));
     },
   },
 });

@@ -27,14 +27,14 @@ export default function BattlePage({ user }) {
   const solution1 = room?.solutions?.[opponents[0]]
   const solution2 = room?.solutions?.[opponents[1]];
 
-  const myEditor = <CodeEditor handleEditorChange={handleEditorChange} solution={room?.solutions?.[user._id]}/>
+  const myEditor = <CodeEditor handleEditorChange={handleEditorChange} solution={room?.solutions?.[user._id]} lang='javascript'/>
 
   const panes = (
     <Windows
       topLeft={<Rooms />}
       topRight={myEditor}
-      bottomLeft={<CodeEditor solution={solution1} />}
-      bottomRight={<CodeEditor solution={solution2} />}
+      bottomLeft={<CodeEditor solution={solution1} lang="javascript" />}
+      bottomRight={<CodeEditor solution={solution2} lang="javascript" />}
     />
   );
 
