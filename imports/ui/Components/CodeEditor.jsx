@@ -8,7 +8,7 @@ export default function CodeEditor({ solution, handleEditorChange }) {
     <Editor
       height="95vh"
       defaultLanguage="javascript"
-      defaultValue={"// Get ready motherfuckers"}
+      defaultValue={''}
       value={solution}
       onChange={handleEditorChange}
       options={EditorOptions}
