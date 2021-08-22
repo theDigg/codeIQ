@@ -3,6 +3,8 @@ import { Switch, Route } from 'react-router-dom';
 // import styled from 'styled-components';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
+import { setAuth } from './features/auth/authSlice'
+import { useDispatch } from 'react-redux'
 // import { Session } from 'meteor/session';
 // import ChallengesCollection from '/imports/db/challenges';
 // import RoomsCollection from '/imports/db/rooms';
@@ -54,7 +56,9 @@ const requireAuth = (nextState, replace) => {
 };
 
 export const App = () => {
+  const dispatch = useDispatch()
   const user = useTracker(() => Meteor.user());
+  dispatch(setAuth(user))
   const [showCompleted, setShowCompleted] = useState(false);
   const [challengeTitle, setChallengeTitle] = useState('Fibonacci');
   // const showCompletedFilter = { isCompleted: { $ne: true } }

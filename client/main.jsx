@@ -7,13 +7,17 @@ import { ThemeProvider } from '@material-ui/core/styles';
 // import { SnackbarProvider } from 'notistack';
 import { CssBaseline } from '@material-ui/core';
 import theme from '/imports/ui/themes';
+import store from '../imports/ui/store';
+import { Provider } from 'react-redux';
 
 Meteor.startup(() => {
   render(
     <ThemeProvider theme={theme}>
       <Router>
-        <CssBaseline />
-        <App />
+        <Provider store={store}>
+          <CssBaseline />
+          <App />
+        </Provider>
       </Router>
     </ThemeProvider>,
     document.getElementById('react-target'),
