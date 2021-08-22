@@ -1,5 +1,13 @@
 import React from 'react';
+import styled from 'styled-components'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
+
+const StyledReflexContainer = styled(ReflexContainer)`
+  overflow: hidden;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
 
 export default ({ topLeft, topRight, bottomLeft, bottomRight }) => {
   return (

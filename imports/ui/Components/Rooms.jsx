@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 import RoomsCollection from '../../db/rooms';
@@ -18,6 +19,13 @@ const leaveRoom = (roomId) => {
   Meteor.call('rooms.leave', roomId);
 };
 
+const ScrollContainer = styled.div`
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 export default () => {
   const { rooms, isLoading } = useTracker(() => {
     const handler = Meteor.subscribe('rooms');
@@ -31,7 +39,7 @@ export default () => {
   const [roomName, setRoomName] = React.useState('');
 
   return (
-    <div>
+    <ScrollContainer>
       <h2>Meteor Rooms</h2>
       <input onChange={(e) => setRoomName(e.target.value)} />
       <button onClick={() => createRoom(roomName)}>Create Room</button>
@@ -57,6 +65,6 @@ export default () => {
             </li>
           ))}
       </ul>
-    </div>
+    </ScrollContainer>
   );
 };
