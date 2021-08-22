@@ -3,14 +3,17 @@ import styled from 'styled-components';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 import RoomsCollection from '../../db/rooms';
+import { useDispatch } from 'react-redux';
+import { setRooms, setCurrentRoom } from '../features/rooms/roomsSlice'
 
 const createRoom = (roomId) => Meteor.call('rooms.insert', roomId);
 const deleteRoom = (roomId) => Meteor.call('rooms.remove', roomId);
-const joinRoom = (roomId) => {
+const joinRoom = (roomId, dispatch) => {
   if (Session.get('room')) {
     Meteor.call('rooms.leave', Session.get('room'));
   }
   Session.set('room', roomId);
+  // dispatch(setCurrentRoom(roomId))
   Meteor.call('rooms.join', roomId);
 };
 
@@ -27,12 +30,14 @@ const ScrollContainer = styled.div`
 `;
 
 export default () => {
+  const dispatch = useDispatch()
   const { rooms, isLoading } = useTracker(() => {
     const handler = Meteor.subscribe('rooms');
     if (!handler.ready()) {
       return { isLoading: true };
     }
     const rooms = RoomsCollection.find().fetch();
+    dispatch(setRooms(rooms))
     return { rooms, isLoading: false };
   });
   const user = useTracker(() => Meteor.user());
@@ -55,7 +60,7 @@ export default () => {
                     <li key={user}>{user}</li>
                   ))}
                 </ul>
-                <button onClick={() => (room.lobby.includes(user._id) ? leaveRoom(room._id) : joinRoom(room._id))}>
+                <button onClick={() => (room.lobby.includes(user._id) ? leaveRoom(room._id) : joinRoom(room._id, dispatch))}>
                   {room.lobby.includes(user._id) ? 'Leave room' : 'Join Room'}
                 </button>
                 <button onClick={() => deleteRoom(room._id)} disabled={user._id !== room.userId}>

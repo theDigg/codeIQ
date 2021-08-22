@@ -1,5 +1,4 @@
 import React from 'react';
-import Editor from '@monaco-editor/react';
 import CodeEditor from '../Components/CodeEditor';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
@@ -7,21 +6,37 @@ import { Session } from 'meteor/session';
 import Windows from '../Components/PaneWindows';
 import Rooms from '../Components/Rooms';
 import RoomsCollection from '/imports/db/rooms';
+import { useDispatch } from 'react-redux';
+import { setCurrentRoom } from '../features/rooms/roomsSlice';
+
 
 export default function BattlePage({ user }) {
+  const dispatch = useDispatch()
   const room = useTracker(() => {
     return RoomsCollection.findOne(
       { _id: Session.get('room') },
-      {
-        sort: { createdAt: -1 },
-      },
     );
   });
+  dispatch(setCurrentRoom(room))
+
   function handleEditorChange(value, event) {
-    Meteor.call('challenges.edit', room.challenge._id, value);
+    Meteor.call('rooms.editSolution', room._id, value);
   }
-  const editor = <CodeEditor />;
-  const panes = <Windows topLeft={<Rooms />} topRight={editor} bottomLeft={editor} bottomRight={editor} />;
+
+  const opponents = room?.lobby.filter(id => id !== user._id)
+  const solution1 = room?.solutions?.[opponents[0]]
+  const solution2 = room?.solutions?.[opponents[1]];
+
+  const myEditor = <CodeEditor handleEditorChange={handleEditorChange} solution={room?.solutions?.[user._id]}/>
+
+  const panes = (
+    <Windows
+      topLeft={<Rooms />}
+      topRight={myEditor}
+      bottomLeft={<CodeEditor solution={solution1} />}
+      bottomRight={<CodeEditor solution={solution2} />}
+    />
+  );
 
   return (
     <div>

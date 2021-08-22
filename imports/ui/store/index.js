@@ -1,4 +1,4 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import monitorReducersEnhancer from '../enhancers/monitorReducers';
 import loggerMiddleware from '../middleware/logger';
 import rootReducer from './reducers';
@@ -9,8 +9,8 @@ const store = configureStore({
   enhancers: [monitorReducersEnhancer],
 });
 
-// if (process.env.NODE_ENV !== 'production' && module.hot) {
-//   module.hot.accept('./reducers', () => store.replaceReducer(rootReducer));
-// }
+if (process.env.NODE_ENV !== 'production' && module.hot) {
+  module.hot.accept();
+}
 
 export default store

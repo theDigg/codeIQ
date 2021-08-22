@@ -1,21 +1,18 @@
 import React from 'react';
 import Editor from '@monaco-editor/react';
 import { EditorOptions } from './EditorOptions';
+import { useSelector } from 'react-redux';
 
-export default function CodeEditor() {
-  function handleEditorValidation(markers) {
-    // model markers
-    markers.forEach((marker) => console.log('onValidate:', marker.message));
-  }
-
+export default function CodeEditor({ solution, handleEditorChange }) {
   return (
     <Editor
-      height="90vh"
+      height="95vh"
       defaultLanguage="javascript"
-      defaultValue="// let's write some broken code 😈"
-      onValidate={handleEditorValidation}
+      defaultValue={"// Get ready motherfuckers"}
+      value={solution}
+      onChange={handleEditorChange}
       options={EditorOptions}
-      theme='vs-dark'
+      theme="vs-dark"
     />
   );
 }
