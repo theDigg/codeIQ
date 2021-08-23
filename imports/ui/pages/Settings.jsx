@@ -3,6 +3,8 @@ import Editor from '../Components/CodeEditor';
 import EditorOptions from '../settings/editorSettings.json';
 import { setSettings } from '../features/settings/settingsSlice';
 import { useDispatch } from 'react-redux';
+import LongMenu from '../Components/LongMenu';
+import themes from '../themes/editor';
 
 const settings = `
 {
@@ -67,10 +69,9 @@ const settings = `
     "verticalSliderSize": 10
   },
   "smoothScrolling": false,
-  "snippetSuggestions": true,
-  "theme": "vs-dark"
+  "snippetSuggestions": true
 }
-`
+`;
 
 export default function SettingsPage() {
   const [editorSettings, setEditorSettings] = useState(settings);
@@ -81,6 +82,7 @@ export default function SettingsPage() {
   return (
     <div>
       <h1> Settings </h1>
+      <LongMenu items={Object.entries(themes)} />
       <button
         onClick={() => {
           dispatch(setSettings(JSON.parse(editorSettings)));

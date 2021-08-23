@@ -14,7 +14,7 @@ Meteor.methods({
     RoomsCollection.insert({
       title,
       started: false,
-      createdAt: new Date(),
+      createdAt: Date.now(),
       lobby: [this.userId],
       userId: this.userId,
       challenge: {},
