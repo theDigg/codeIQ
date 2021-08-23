@@ -34,17 +34,6 @@ Meteor.startup(() => {
   if (ChallengesCollection.find().count() !== 6) {
     seedChallenges();
   }
-
-  if (RoomsCollection.find().count() === 0) {
-    [
-      {
-        title: 'room1',
-      },
-      {
-        title: 'room2',
-      },
-    ].forEach((room) => insertRoom(room.title, user));
-  }
 });
 
 //
