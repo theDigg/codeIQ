@@ -14,7 +14,7 @@ import DominionDay from './Dominion Day.json';
 import Dreamweaver from './Dreamweaver.json';
 import Eiffel from './Eiffel.json';
 import EspressoLibre from './Espresso Libre.json';
-import Github from './Github.json';
+import Github from './GitHub.json';
 import highline from './highline.json';
 import IDLE from './IDLE.json';
 import idleFingers from './idleFingers.json';
