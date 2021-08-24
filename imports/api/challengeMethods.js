@@ -3,6 +3,14 @@ import { check } from 'meteor/check';
 import ChallengesCollection from '../db/challenges';
 import piston from 'piston-client';
 
+// ! Need to run a seperate server for this piston API for the final deployment
+// TODO: just remember to have the piston-client in node_modules post the content type:
+/*
+  headers: {
+    'Content-Type': 'application/json'
+  },
+*/
+// const client = piston({ server: 'http://localhost:2000' }); // If running the piston API locally
 const client = piston({ server: 'https://emkc.org' });
 
 Meteor.methods({
@@ -108,12 +116,13 @@ Meteor.methods({
         console.log(${challenge.tests});
         `,
         );
+        console.log(code.split` `.join``.length);
         console.log(result);
         console.log(JSON.parse(result.run.output));
-        if (JSON.parse(result.run.output).every(result => result)) {
+        if (JSON.parse(result.run.output).every((result) => result)) {
           console.log('You passed!!');
         } else {
-          console.log('You failed!!')
+          console.log('You failed!!');
         }
       })();
     }
