@@ -39,22 +39,6 @@ import Settings from './pages/Settings';
 
 // console.log(Session.get('challenge'));
 
-export const isLoggedIn = () => {
-  return Boolean(Meteor.userId());
-};
-export const isLoggedOut = () => {
-  return !Meteor.userId();
-};
-
-const requireAuth = (nextState, replace) => {
-  if (isLoggedOut()) {
-    replace({
-      pathname: '/login',
-      state: { nextPathname: '/' },
-    });
-  }
-};
-
 export const App = () => {
   const dispatch = useDispatch()
   const user = useTracker(() => Meteor.user());

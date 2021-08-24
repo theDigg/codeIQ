@@ -5,7 +5,10 @@ import rootReducer from './reducers';
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(loggerMiddleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(loggerMiddleware),
   enhancers: [monitorReducersEnhancer],
 });
 
@@ -13,4 +16,4 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
   module.hot.accept();
 }
 
-export default store
+export default store;
