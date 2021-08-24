@@ -20,6 +20,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Account from './pages/Account';
 import Battle from './pages/Battle';
+import Golf from './pages/Golf';
 import Duel from './pages/Duel';
 import TimeTrial from './pages/TimeTrial';
 import Practice from './pages/Practice';
@@ -78,7 +79,7 @@ export const App = () => {
       <Drawer>
         <Switch>
           <Route exact path="/">
-            <Welcome/>
+            <Welcome />
           </Route>
           <Route path="/signup">
             <Signup />
@@ -91,6 +92,9 @@ export const App = () => {
           </PrivateRoute>
           <PrivateRoute path="/battle">
             <Battle user={user} />
+          </PrivateRoute>
+          <PrivateRoute path="/golf">
+            <Golf user={user} />
           </PrivateRoute>
           <PrivateRoute path="/duel">
             <Duel />

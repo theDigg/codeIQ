@@ -20,6 +20,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import CodeIcon from '@material-ui/icons/Code';
+import GolfCourseIcon from '@material-ui/icons/GolfCourse';
 import MergeTypeIcon from '@material-ui/icons/MergeType';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import BarChartIcon from '@material-ui/icons/BarChart';
@@ -185,6 +186,14 @@ export default function MiniDrawer({ children }) {
                   <CodeIcon fontSize="large" />
                 </ListItemIcon>
                 <ListItemText primary="Battle Royale" />
+              </ListItem>
+            </StyledLink>
+            <StyledLink to="/golf">
+              <ListItem button key="Golf">
+                <ListItemIcon>
+                  <GolfCourseIcon fontSize="large" />
+                </ListItemIcon>
+                <ListItemText primary="Code Golf" />
               </ListItem>
             </StyledLink>
             <StyledLink to="/duel">

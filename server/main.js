@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+import piston from 'piston-client';
 import ChallengesCollection from '/imports/db/challenges';
 import RoomsCollection from '/imports/db/rooms';
 import seedChallenges from '/imports/db/seedChallenges';
@@ -34,6 +35,25 @@ Meteor.startup(() => {
   if (ChallengesCollection.find().count() !== 6) {
     seedChallenges();
   }
+
+
+  (async () => {
+    // const client = piston({ server: 'https://emkc.org' });
+
+    // const runtimes = await client.runtimes();
+    // [{ language: 'python', version: '3.9.4', aliases: ['py'] }, ...]
+
+    // const result = await client.execute('javascript', 'console.log("Hello World!")');
+    // { language: 'python', version: '3.9.4', run: {
+    //     stdout: 'Hello World!\n',
+    //     stderr: '',
+    //     code: 0,
+    //     signal: null,
+    //     output: 'Hello World!\n'
+    // }}
+
+    // console.log(result);
+  })();
 });
 
 //

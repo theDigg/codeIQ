@@ -1,6 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import ChallengesCollection from '../db/challenges';
+import piston from 'piston-client';
+
+const client = piston({ server: 'https://emkc.org' });
 
 Meteor.methods({
   'challenges.insert'(title) {
@@ -79,5 +82,40 @@ Meteor.methods({
         isCompleted,
       },
     });
+  },
+
+  'challenges.submit'(challengeId, code) {
+    check(challengeId, String);
+    check(code, String);
+
+    if (!this.userId) {
+      throw new Meteor.Error('Not authorized.');
+    }
+
+    const challenge = ChallengesCollection.findOne({
+      _id: challengeId,
+    });
+
+    if (!challenge) {
+      throw new Meteor.Error('No challenge was found :(');
+    } else {
+      (async () => {
+        console.log(challengeId, code, challenge.tests);
+        const result = await client.execute(
+          'javascript',
+          `
+        ${code};
+        console.log(${challenge.tests});
+        `,
+        );
+        console.log(result);
+        console.log(JSON.parse(result.run.output));
+        if (JSON.parse(result.run.output).every(result => result)) {
+          console.log('You passed!!');
+        } else {
+          console.log('You failed!!')
+        }
+      })();
+    }
   },
 });
