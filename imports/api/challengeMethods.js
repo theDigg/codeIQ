@@ -3,15 +3,15 @@ import { check } from 'meteor/check';
 import ChallengesCollection from '../db/challenges';
 import piston from 'piston-client';
 
-// ! Need to run a seperate server for this piston API for the final deployment
+// ! Need to run a separate server for this piston API for the final deployment
 // TODO: just remember to have the piston-client in node_modules post the content type:
 /*
   headers: {
     'Content-Type': 'application/json'
   },
 */
-// const client = piston({ server: 'http://localhost:2000' }); // If running the piston API locally
-const client = piston({ server: 'https://emkc.org' });
+const client = piston({ server: 'http://localhost:2000' }); // If running the piston API locally
+// const client = piston({ server: 'https://emkc.org' });
 
 Meteor.methods({
   'challenges.insert'(title) {
