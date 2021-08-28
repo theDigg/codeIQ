@@ -65,27 +65,27 @@
   },
   "rules": [
     {
-      "foreground": "ffffff",
+      "foreground": "#ffffff",
       "fontStyle": "bold",
       "token": "identifier.js"
     },
     {
-      "foreground": "ffffff",
+      "foreground": "#ffffff",
       "fontStyle": "bold",
       "token": "delimiter.js"
     },
     {
-      "foreground": "E542FF",
+      "foreground": "#E542FF",
       "fontStyle": "bold",
       "token": "delimiter.bracket.js"
     },
     {
-      "foreground": "0CFA2F",
+      "foreground": "#0CFA2F",
       "fontStyle": "bold",
       "token": "delimiter.parenthesis.js"
     },
     {
-      "foreground": "19D1E5",
+      "foreground": "#00fff0",
       "fontStyle": "bold",
       "token": "type.identifier.js"
     },
@@ -100,8 +100,12 @@
       "token": "string.comment"
     },
     {
-      "foreground": "#FFD945",
+      "foreground": "#FFff45",
       "token": "string"
+    },
+    {
+      "foreground": "#E542FF",
+      "token": "number.js"
     },
     {
       "foreground": "#FF3F4F",

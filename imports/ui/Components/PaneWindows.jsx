@@ -1,19 +1,16 @@
 import React from 'react';
-import styled from 'styled-components'
+import styled from 'styled-components';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 
 const StyledReflexContainer = styled(ReflexContainer)`
-  overflow: hidden;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  background: #1d1d1d;
 `;
 
 export default ({ topLeft, topRight, bottomLeft, bottomRight }) => {
   return (
-    <ReflexContainer orientation="vertical" style={{ height: '95.5vh' }}>
+    <StyledReflexContainer orientation="vertical" style={{ height: '95.5vh' }}>
       <ReflexElement>
-        <ReflexContainer orientation="horizontal">
+        <StyledReflexContainer orientation="horizontal">
           <ReflexElement propagateDimensionsRate={200} propagateDimensions={true} flex={0.5}>
             <div className="pane-content">
               {/* <label>Top Left Pane</label> */}
@@ -29,13 +26,13 @@ export default ({ topLeft, topRight, bottomLeft, bottomRight }) => {
               {bottomLeft}
             </div>
           </ReflexElement>
-        </ReflexContainer>
+        </StyledReflexContainer>
       </ReflexElement>
 
       <ReflexSplitter />
 
       <ReflexElement className="right-pane" flex={0.5}>
-        <ReflexContainer orientation="horizontal">
+        <StyledReflexContainer orientation="horizontal">
           <ReflexElement propagateDimensionsRate={200} propagateDimensions={true} flex={0.5}>
             <div className="pane-content">
               {/* <label> Top Right Pane </label> */}
@@ -51,8 +48,8 @@ export default ({ topLeft, topRight, bottomLeft, bottomRight }) => {
               {bottomRight}
             </div>
           </ReflexElement>
-        </ReflexContainer>
+        </StyledReflexContainer>
       </ReflexElement>
-    </ReflexContainer>
+    </StyledReflexContainer>
   );
 };

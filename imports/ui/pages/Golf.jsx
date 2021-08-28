@@ -8,11 +8,11 @@ import Rooms from '../Components/Rooms';
 import ChallengesCollection from '/imports/db/challenges';
 import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import { createTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import { green, blue, red } from '@material-ui/core/colors';
-import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { darcula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { red } from '@material-ui/core/colors';
+// import ReactMarkdown from 'react-markdown';
+// import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+// import { darcula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const ColorButton = withStyles((theme) => ({
   root: {
@@ -30,24 +30,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const markdown = `Here is some JavaScript code:
+// const markdown = `Here is some JavaScript code:
 
-~~~js
-// This file is initialized with a code version of this
-// question's sample test case. Feel free to add, edit,
-// or remove test cases in this file as you see fit!
+// ~~~js
+// // This file is initialized with a code version of this
+// // question's sample test case. Feel free to add, edit,
+// // or remove test cases in this file as you see fit!
 
-const program = require('./program');
-const chai = require('chai');
+// const program = require('./program');
+// const chai = require('chai');
 
-it('Test Case #1', function () {
-  const array = [8, 5, 11, -1, 3, 4, 2];
-  const expected = [5, 4, 4, 0, 1, 1, 0];
-  const actual = program.rightSmallerThan(array);
-  chai.expect(actual).to.deep.equal(expected);
-});
-~~~
-`;
+// it('Test Case #1', function () {
+//   const array = [8, 5, 11, -1, 3, 4, 2];
+//   const expected = [5, 4, 4, 0, 1, 1, 0];
+//   const actual = program.rightSmallerThan(array);
+//   chai.expect(actual).to.deep.equal(expected);
+// });
+// ~~~
+// `;
 
 {
   /* <ReactMarkdown

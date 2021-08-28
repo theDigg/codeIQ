@@ -112,10 +112,16 @@ Meteor.methods({
         const result = await client.execute(
           'javascript',
           `
-        ${code};
-        console.log(${challenge.tests});
-        `,
+
+          ${code};
+          console.log(${challenge.tests});
+          `,
         );
+        ChallengesCollection.update(challengeId, {
+          $set: {
+            result,
+          },
+        });
         console.log(code.split` `.join``.length);
         console.log(result);
         console.log(JSON.parse(result.run.output));
