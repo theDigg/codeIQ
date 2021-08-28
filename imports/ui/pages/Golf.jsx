@@ -6,10 +6,12 @@ import { Session } from 'meteor/session';
 import Windows from '../Components/PaneWindows';
 import Rooms from '../Components/Rooms';
 import ChallengesCollection from '/imports/db/challenges';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
+import { setChallenges, setChallenge, setResults } from '../features/golf/golfSlice';
+
 // import ReactMarkdown from 'react-markdown';
 // import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 // import { darcula } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -68,21 +70,20 @@ const useStyles = makeStyles((theme) => ({
 }
 
 export default function GolfPage({ user }) {
-  const [solution, setSolution] = useState('');
-  const [challenge, setChallenge] = useState({});
   const dispatch = useDispatch();
-  const challenges = useTracker(() => {
-    return ChallengesCollection.find({}).fetch();
-  });
-
-  console.log(challenge);
+  const [solution, setSolution] = useState('');
+  const { challenges, challenge, results } = useSelector((state) => state.golf);
+  useTracker(() => {
+    let challenges = ChallengesCollection.find({}).fetch();
+    dispatch(setChallenges(challenges));
+  }, []);
 
   function handleEditorChange(value, event) {
     setSolution(value);
   }
 
   function handleChallengeClick(challenge) {
-    setChallenge(challenge);
+    dispatch(setChallenge(challenge));
     setSolution(challenge.solution);
   }
 
