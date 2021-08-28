@@ -33,7 +33,7 @@ import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -67,8 +67,12 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
+  brand: {
+    marginLeft: theme.spacing(2),
+  },
   menuButton: {
-    marginRight: 36,
+    marginLeft: -3,
+    marginRight: 30,
   },
   hide: {
     display: 'none',
@@ -93,16 +97,19 @@ const useStyles = makeStyles((theme) => ({
     overflowX: 'hidden',
     width: theme.spacing(7) + 1,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1,
+      width: theme.spacing(7) + 1,
     },
   },
   toolbar: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
     padding: theme.spacing(0, 1),
+    height: theme.spacing(1),
+    width: '100%',
     // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
+    // ...theme.mixins.toolbar,
+    minHeight: 48,
   },
   content: {
     flexGrow: 1,
@@ -135,7 +142,7 @@ export default function MiniDrawer({ children }) {
           [classes.appBarShift]: open,
         })}
       >
-        <Toolbar>
+        <Toolbar variant="dense" className={classes.toolbar}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -145,10 +152,10 @@ export default function MiniDrawer({ children }) {
               [classes.hide]: open,
             })}
           >
-            <MenuIcon />
+            <MenuIcon fontSize="medium" />
           </IconButton>
           <Typography variant="h6" noWrap>
-            CodeIQ
+            {!open && 'CodeIQ'}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -167,6 +174,9 @@ export default function MiniDrawer({ children }) {
       >
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>{theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}</IconButton>
+          <Typography variant="h6" nowrap className={classes.brand}>
+            CodeIQ
+          </Typography>
         </div>
         <Divider />
         {user ? (
@@ -174,7 +184,7 @@ export default function MiniDrawer({ children }) {
             <StyledLink to="/account">
               <ListItem button key="account">
                 <ListItemIcon>
-                  <AccountBoxIcon fontSize="large" />
+                  <AccountBoxIcon fontSize="medium" />
                 </ListItemIcon>
                 <ListItemText primary="Account" />
               </ListItem>
@@ -183,7 +193,7 @@ export default function MiniDrawer({ children }) {
             <StyledLink to="/battle">
               <ListItem button key="Battle">
                 <ListItemIcon>
-                  <CodeIcon fontSize="large" />
+                  <CodeIcon fontSize="medium" />
                 </ListItemIcon>
                 <ListItemText primary="Battle Royale" />
               </ListItem>
@@ -191,7 +201,7 @@ export default function MiniDrawer({ children }) {
             <StyledLink to="/golf">
               <ListItem button key="Golf">
                 <ListItemIcon>
-                  <GolfCourseIcon fontSize="large" />
+                  <GolfCourseIcon fontSize="medium" />
                 </ListItemIcon>
                 <ListItemText primary="Code Golf" />
               </ListItem>
@@ -199,7 +209,7 @@ export default function MiniDrawer({ children }) {
             <StyledLink to="/duel">
               <ListItem button key="duel">
                 <ListItemIcon>
-                  <MergeTypeIcon fontSize="large" />
+                  <MergeTypeIcon fontSize="medium" />
                 </ListItemIcon>
                 <ListItemText primary="Duel" />
               </ListItem>
@@ -207,7 +217,7 @@ export default function MiniDrawer({ children }) {
             <StyledLink to="/time-trial">
               <ListItem button key="time-trial">
                 <ListItemIcon>
-                  <HourglassEmptyIcon fontSize="large" />
+                  <HourglassEmptyIcon fontSize="medium" />
                 </ListItemIcon>
                 <ListItemText primary="Time Trial" />
               </ListItem>
@@ -215,7 +225,7 @@ export default function MiniDrawer({ children }) {
             <StyledLink to="/practice">
               <ListItem button key="practice">
                 <ListItemIcon>
-                  <FitnessCenterIcon fontSize="large" />
+                  <FitnessCenterIcon fontSize="medium" />
                 </ListItemIcon>
                 <ListItemText primary="Practice" />
               </ListItem>
@@ -224,7 +234,7 @@ export default function MiniDrawer({ children }) {
             <StyledLink to="/leaderboard">
               <ListItem button key="leaderboard">
                 <ListItemIcon>
-                  <BarChartIcon fontSize="large" />
+                  <BarChartIcon fontSize="medium" />
                 </ListItemIcon>
                 <ListItemText primary="Leaderboard" />
               </ListItem>
@@ -232,7 +242,7 @@ export default function MiniDrawer({ children }) {
             <StyledLink to="/top-users">
               <ListItem button key="top-users">
                 <ListItemIcon>
-                  <TerrainIcon fontSize="large" />
+                  <TerrainIcon fontSize="medium" />
                 </ListItemIcon>
                 <ListItemText primary="Top Users" />
               </ListItem>
@@ -240,7 +250,7 @@ export default function MiniDrawer({ children }) {
             <StyledLink to="/progress">
               <ListItem button key="progress">
                 <ListItemIcon>
-                  <TrendingUpIcon fontSize="large" />
+                  <TrendingUpIcon fontSize="medium" />
                 </ListItemIcon>
                 <ListItemText primary="Progress" />
               </ListItem>
@@ -249,7 +259,7 @@ export default function MiniDrawer({ children }) {
             <StyledLink to="/messages">
               <ListItem button key="messages">
                 <ListItemIcon>
-                  <MailIcon fontSize="large" />
+                  <MailIcon fontSize="medium" />
                 </ListItemIcon>
                 <ListItemText primary="Messages" />
               </ListItem>
@@ -257,7 +267,7 @@ export default function MiniDrawer({ children }) {
             <StyledLink to="/settings">
               <ListItem button key="settings">
                 <ListItemIcon>
-                  <TuneIcon fontSize="large" />
+                  <TuneIcon fontSize="medium" />
                 </ListItemIcon>
                 <ListItemText primary="Settings" />
               </ListItem>
@@ -265,7 +275,7 @@ export default function MiniDrawer({ children }) {
             <StyledLink to="/">
               <ListItem button key="logout" onClick={logout}>
                 <ListItemIcon>
-                  <MeetingRoomIcon fontSize="large" />
+                  <MeetingRoomIcon fontSize="medium" />
                 </ListItemIcon>
                 <ListItemText primary="Logout" />
               </ListItem>
@@ -276,7 +286,7 @@ export default function MiniDrawer({ children }) {
             <StyledLink to="/login">
               <ListItem button key="login">
                 <ListItemIcon>
-                  <FingerprintIcon fontSize="large" />
+                  <FingerprintIcon fontSize="medium" />
                 </ListItemIcon>
                 <ListItemText primary="Login" />
               </ListItem>
@@ -284,7 +294,7 @@ export default function MiniDrawer({ children }) {
             <StyledLink to="/signup">
               <ListItem button key="signup">
                 <ListItemIcon>
-                  <AssignmentIcon fontSize="large" />
+                  <AssignmentIcon fontSize="medium" />
                 </ListItemIcon>
                 <ListItemText primary="Signup" />
               </ListItem>

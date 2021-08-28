@@ -9,6 +9,7 @@ import { CssBaseline } from '@material-ui/core';
 import theme from '/imports/ui/themes';
 import store from '../imports/ui/store';
 import { Provider } from 'react-redux';
+// import '@material-tailwind/react/tailwind.css';
 
 Meteor.startup(() => {
   render(
