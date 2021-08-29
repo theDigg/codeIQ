@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import ChallengesCollection from '../db/challenges';
 import piston from 'piston-client';
-
+import * as utils from '../utils/stringUtils'
 // ! Need to run a separate server for this piston API for the final deployment
 // TODO: just remember to have the piston-client in node_modules post the content type:
 /*
@@ -109,11 +109,13 @@ Meteor.methods({
     } else {
       (async () => {
         console.log(challengeId, code, challenge.tests);
+        let strippedCode = utils.removeComments(code)
+        console.log(strippedCode);
         const result = await client.execute(
           'javascript',
           `
 
-          ${code};
+          ${strippedCode};
           console.log(${challenge.tests});
           `,
         );
@@ -122,7 +124,7 @@ Meteor.methods({
             result,
           },
         });
-        console.log(code.split` `.join``.length);
+        console.log(strippedCode.split` `.join``.length);
         console.log(result);
         console.log(JSON.parse(result.run.output));
         if (JSON.parse(result.run.output).every((result) => result)) {
