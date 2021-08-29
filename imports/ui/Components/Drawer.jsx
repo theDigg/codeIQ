@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, Switch, Route } from 'react-router-dom';
 import { useTracker } from 'meteor/react-meteor-data';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -12,6 +12,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -72,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginLeft: -3,
-    marginRight: 30,
+    marginRight: 20,
   },
   hide: {
     display: 'none',
@@ -99,6 +100,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(7) + 1,
     },
+  },
+  title: {
+    flexGrow: 1,
   },
   toolbar: {
     display: 'flex',
@@ -154,9 +158,16 @@ export default function MiniDrawer({ children }) {
           >
             <MenuIcon fontSize="medium" />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6" noWrap className={classes.title}>
             {!open && 'CodeIQ'}
           </Typography>
+          <Switch>
+            <Route path="/golf">
+              <Button variant="contained" color="default">
+                Run code
+              </Button>
+            </Route>
+          </Switch>
         </Toolbar>
       </AppBar>
       <Drawer
