@@ -10,6 +10,10 @@ import theme from '/imports/ui/themes';
 import store from '../imports/ui/store';
 import { Provider } from 'react-redux';
 // import '@material-tailwind/react/tailwind.css';
+import { startGraphQLClient } from 'meteor/quave:graphql/client';
+import { ApolloProvider } from '@apollo/react-hooks';
+
+const apolloClient = startGraphQLClient({ connectToDevTools: true });
 
 Meteor.startup(() => {
   render(
@@ -17,7 +21,9 @@ Meteor.startup(() => {
       <Router>
         <Provider store={store}>
           <CssBaseline />
-          <App />
+          <ApolloProvider client={apolloClient}>
+            <App />
+          </ApolloProvider>
         </Provider>
       </Router>
     </ThemeProvider>,

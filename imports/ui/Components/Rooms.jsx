@@ -2,9 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
-import RoomsCollection from '../../db/rooms';
+import Rooms from '../../db/rooms';
 import { useDispatch } from 'react-redux';
-import { setRooms, setCurrentRoom } from '../features/rooms/roomsSlice'
+import { setRooms, setCurrentRoom } from '../features/rooms/roomsSlice';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 
 const createRoom = (roomId) => Meteor.call('rooms.insert', roomId);
 const deleteRoom = (roomId) => Meteor.call('rooms.remove', roomId);
@@ -29,25 +31,65 @@ const ScrollContainer = styled.div`
   }
 `;
 
+const roomsQuery = gql`
+  query Rooms {
+    rooms {
+      _id
+      title
+      started
+      createdAt
+      lobby
+      userId
+    }
+  }
+`;
+
+const roomMutation = gql`
+  mutation AddRoom($title: String!) {
+    addRoom(title: $title) {
+      _id
+    }
+  }
+`;
+
 export default () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const { data, loading, refetch } = useQuery(roomsQuery);
+  const [addRoomMutation] = useMutation(roomMutation);
   const { rooms, isLoading } = useTracker(() => {
     const handler = Meteor.subscribe('rooms');
     if (!handler.ready()) {
       return { isLoading: true };
     }
-    const rooms = RoomsCollection.find().fetch();
-    dispatch(setRooms(rooms))
+    const rooms = Rooms.find().fetch();
+    dispatch(setRooms(rooms));
     return { rooms, isLoading: false };
   });
   const user = useTracker(() => Meteor.user());
   const [roomName, setRoomName] = React.useState('');
 
+    const handleSubmit = (e) => {
+      e.preventDefault();
+
+      if (!roomName) return;
+
+      addRoomMutation({
+        variables: {
+          title: roomName,
+        },
+        refetchQueries: () => ['Rooms'],
+      })
+        .then(() => console.log('Room added with success'))
+        .catch((e) => console.error('Error trying to add room', e));
+
+      setRoomName('');
+    };
+
   return (
     <ScrollContainer>
       <h2>Meteor Rooms</h2>
       <input onChange={(e) => setRoomName(e.target.value)} />
-      <button onClick={() => createRoom(roomName)}>Create Room</button>
+      <button onClick={handleSubmit}>Create Room</button>
       <ul>
         {!isLoading &&
           user &&

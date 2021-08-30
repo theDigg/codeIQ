@@ -8,6 +8,7 @@ import '/imports/api/challengeMethods';
 import '/imports/api/roomMethods';
 import '/imports/api/roomPublications';
 import './service-config';
+import '/imports/api/graphql';
 
 const insertRoom = (title, user, url) => {
   RoomsCollection.insert({
