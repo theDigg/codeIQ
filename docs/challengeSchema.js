@@ -31,8 +31,6 @@ const challenge = {
         description: 'An integer representing the number of queens to place on a `n x n` chessboard.',
         name: 'n',
         type: 'integer',
-        description: 'An integer representing the number of possible `n x n` board states such that n-queens cannot attack each other.',
-        type: 'integer',
       },
     ],
     output: {

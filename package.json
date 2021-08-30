@@ -30,6 +30,7 @@
     "react-router-dom": "^5.2.0",
     "react-syntax-highlighter": "^15.4.4",
     "redux-thunk": "^2.3.0",
+    "simpl-schema": "^1.12.0",
     "styled-components": "^5.3.0",
     "tinycolor2": "^1.4.2"
   },

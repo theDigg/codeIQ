@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import ChallengesCollection from '../db/challenges';
+import SimpleSchema from 'simpl-schema';
+import Challenges from '../db/challenges';
 import piston from 'piston-client';
 import * as utils from '../utils/stringUtils'
 // ! Need to run a separate server for this piston API for the final deployment
@@ -19,7 +20,7 @@ Meteor.methods({
 
     if (!this.userId) throw new Meteor.Error('Not authorized.');
 
-    ChallengesCollection.insert({
+    Challenges.insert({
       title,
       createdAt: new Date(),
       userId: this.userId,
@@ -34,7 +35,7 @@ Meteor.methods({
       throw new Meteor.Error('Not authorized.');
     }
 
-    const challenge = ChallengesCollection.findOne({
+    const challenge = Challenges.findOne({
       _id: challengeId,
     });
 
@@ -42,7 +43,7 @@ Meteor.methods({
       throw new Meteor.Error('Access denied.');
     }
 
-    ChallengesCollection.update(challengeId, {
+    Challenges.update(challengeId, {
       $set: {
         solution: value,
       },
@@ -56,7 +57,7 @@ Meteor.methods({
       throw new Meteor.Error('Not authorized.');
     }
 
-    const challenge = ChallengesCollection.findOne({
+    const challenge = Challenges.findOne({
       _id: challengeId,
       userId: this.userId,
     });
@@ -65,7 +66,7 @@ Meteor.methods({
       throw new Meteor.Error('Access denied.');
     }
 
-    ChallengesCollection.remove(challengeId);
+    Challenges.remove(challengeId);
   },
 
   'challenges.setCompleted'(challengeId, isCompleted) {
@@ -76,7 +77,7 @@ Meteor.methods({
       throw new Meteor.Error('Not authorized.');
     }
 
-    const challenge = ChallengesCollection.findOne({
+    const challenge = Challenges.findOne({
       _id: challengeId,
       userId: this.userId,
     });
@@ -85,7 +86,7 @@ Meteor.methods({
       throw new Meteor.Error('Access denied.');
     }
 
-    ChallengesCollection.update(challengeId, {
+    Challenges.update(challengeId, {
       $set: {
         isCompleted,
       },
@@ -100,7 +101,7 @@ Meteor.methods({
       throw new Meteor.Error('Not authorized.');
     }
 
-    const challenge = ChallengesCollection.findOne({
+    const challenge = Challenges.findOne({
       _id: challengeId,
     });
 
@@ -119,16 +120,22 @@ Meteor.methods({
           console.log(${challenge.tests});
           `,
         );
-        ChallengesCollection.update(challengeId, {
+        Challenges.update(challengeId, {
           $set: {
             result,
           },
         });
-        console.log(strippedCode.split` `.join``.length);
+        const solutionLength = strippedCode.split` `.join``.length
+        console.log('solutionLength: ', solutionLength);
         console.log(result);
         console.log(JSON.parse(result.run.output));
         if (JSON.parse(result.run.output).every((result) => result)) {
           console.log('You passed!!');
+          Challenges.update(challengeId, {
+            $min: {
+              shortest: solutionLength
+            }
+          })
         } else {
           console.log('You failed!!');
         }

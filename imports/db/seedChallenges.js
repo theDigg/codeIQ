@@ -1,5 +1,5 @@
 /* eslint-disable */
-import ChallengesCollection from './challenges';
+import Challenges from './challenges';
 
 const challenges = [
   {
@@ -58,7 +58,8 @@ const challenges = [
 
 export default () => {
   challenges.forEach((challenge) => {
-    ChallengesCollection.insert(challenge, (err, docs) => {
+    // Challenges.schema.validate(challenge)
+    Challenges.insert(challenge, (err, docs) => {
       if (err) console.log(err);
       console.log(docs);
     });
