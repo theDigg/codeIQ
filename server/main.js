@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import piston from 'piston-client';
+// import { WebApp } from 'meteor/webapp';
+import http from 'http';
+import socket_io from 'socket.io';
 import Challenges from '/imports/db/challenges';
 import RoomsCollection from '/imports/db/rooms';
 import seedChallenges from '/imports/db/seedChallenges';
@@ -23,7 +25,28 @@ const insertRoom = (title, user, url) => {
 const SEED_USERNAME = 'kyle';
 const SEED_PASSWORD = 'pass';
 
+const PORT = 8080;
+
 Meteor.startup(() => {
+  const server = http.createServer();
+  const io = socket_io(server, {
+    cors: ['http://localhost:3000'],
+  });
+
+  let counter = 0;
+
+  // New client
+  io.on('connection', function (socket) {
+    console.log('new socket client');
+  });
+
+  // Start server
+  try {
+    server.listen(PORT);
+  } catch (e) {
+    console.error(e);
+  }
+
   if (!Accounts.findUserByUsername(SEED_USERNAME)) {
     Accounts.createUser({
       username: SEED_USERNAME,
@@ -37,4 +60,3 @@ Meteor.startup(() => {
     seedChallenges();
   }
 });
-//
