@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
+import { WebApp } from 'meteor/webapp';
+import { Server } from 'socket.io';
 import { Accounts } from 'meteor/accounts-base';
-// import { WebApp } from 'meteor/webapp';
-import http from 'http';
-import socket_io from 'socket.io';
 import Challenges from '/imports/db/challenges';
 import RoomsCollection from '/imports/db/rooms';
 import seedChallenges from '/imports/db/seedChallenges';
@@ -11,6 +10,7 @@ import '/imports/api/roomMethods';
 import '/imports/api/roomPublications';
 import './service-config';
 import '/imports/api/graphql';
+import './monti'
 
 const insertRoom = (title, user, url) => {
   RoomsCollection.insert({
@@ -27,25 +27,21 @@ const SEED_PASSWORD = 'pass';
 
 const PORT = 8080;
 
+const { httpServer } = WebApp;
+
 Meteor.startup(() => {
-  const server = http.createServer();
-  const io = socket_io(server, {
-    cors: ['http://localhost:3000'],
-  });
-
-  let counter = 0;
-
-  // New client
+  const io = new Server(httpServer);
   io.on('connection', function (socket) {
-    console.log('new socket client');
+    console.log('new socket client', socket.id);
+    socket.emit('test', 'Hello')
   });
-
-  // Start server
-  try {
-    server.listen(PORT);
-  } catch (e) {
-    console.error(e);
-  }
+  // if (Meteor.isServer) {
+  //   Meteor.publish('challengeSub', function ({ solution }) {
+  //     var self = this;
+  //     self.added('challenge', 'madeUpId1', { m: solution }); //messages is the collection that will be published to
+  //     self.ready();
+  //   });
+  // }
 
   if (!Accounts.findUserByUsername(SEED_USERNAME)) {
     Accounts.createUser({

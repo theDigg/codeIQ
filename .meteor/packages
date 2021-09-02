@@ -30,3 +30,4 @@ accounts-twitter@1.5.0
 autopublish
 aldeed:collection2
 quave:graphql
+montiapm:agent

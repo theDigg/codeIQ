@@ -3,8 +3,8 @@ import { Switch, Route } from 'react-router-dom';
 // import styled from 'styled-components';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
-import { setAuth } from './features/auth/authSlice'
-import { useDispatch } from 'react-redux'
+import { setAuth } from './features/auth/authSlice';
+import { useDispatch } from 'react-redux';
 // import { Session } from 'meteor/session';
 // import ChallengesCollection from '/imports/db/challenges';
 // import RoomsCollection from '/imports/db/rooms';
@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux'
 // import PaneWindows from './PaneWindows';
 import PrivateRoute from './Components/PrivateRoute';
 import Drawer from './Components/Drawer';
-import Welcome from './pages/Welcome'
+import Welcome from './pages/Welcome';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Account from './pages/Account';
@@ -29,6 +29,24 @@ import Progress from './pages/Progress';
 import TopUsers from './pages/TopUsers';
 import Messages from './pages/Messages';
 import Settings from './pages/Settings';
+import 'setimmediate';
+
+import { io } from 'socket.io-client';
+const socket = io();
+
+socket.on('connect', () => {
+  console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+  console.log(socket.connected); // true
+});
+
+socket.on('test', (message) => {
+  console.log(message);
+})
+
+socket.on('disconnect', () => {
+  console.log(socket.id); // undefined
+  console.log(socket.connected); // false
+});
 
 // Session.set('challenge', 'Fibonacci');
 
@@ -41,9 +59,9 @@ import Settings from './pages/Settings';
 // console.log(Session.get('challenge'));
 
 export const App = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const user = useTracker(() => Meteor.user());
-  dispatch(setAuth(user))
+  dispatch(setAuth(user));
   const [showCompleted, setShowCompleted] = useState(false);
   const [challengeTitle, setChallengeTitle] = useState('Fibonacci');
   // const showCompletedFilter = { isCompleted: { $ne: true } }
