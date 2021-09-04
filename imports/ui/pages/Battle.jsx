@@ -1,10 +1,10 @@
 import React from 'react';
-import CodeEditor from '../Components/CodeEditor';
+import CodeEditor from '../components/CodeEditor';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Session } from 'meteor/session';
-import Windows from '../Components/PaneWindows';
-import Rooms from '../Components/Rooms';
+import Windows from '../components/PaneWindows';
+import Rooms from '../components/Rooms';
 import RoomsCollection from '/imports/db/rooms';
 import { useDispatch } from 'react-redux';
 import { setCurrentRoom } from '../features/rooms/roomsSlice';

@@ -1,18 +1,18 @@
 import React from 'react';
-import Accordion from '../Components/MUI/Accordion';
-import AlignedList from '../Components/MUI/AlignedList';
-import Badges from '../Components/MUI/Badges';
-import Chips from '../Components/MUI/Chips';
-import CustomizedMenu from '../Components/MUI/CustomizedMenu';
-import IconTabs from '../Components/MUI/IconTabs';
-import ImageAvatars from '../Components/MUI/ImageAvatars';
-import InteractiveList from '../Components/MUI/IntetractiveList';
-import Progress from '../Components/MUI/Progress';
-import RecipeReviewCard from '../Components/MUI/RecipeReviewCard';
-import Snackbar from '../Components/MUI/Snackbar';
-import Switches from '../Components/MUI/Switches';
-import SwitchList from '../Components/MUI/SwitchList';
-import VerticalDividers from '../Components/MUI/VerticalDividers';
+import Accordion from '../components/MUI/Accordion';
+import AlignedList from '../components/MUI/AlignedList';
+import Badges from '../components/MUI/Badges';
+import Chips from '../components/MUI/Chips';
+import CustomizedMenu from '../components/MUI/CustomizedMenu';
+import IconTabs from '../components/MUI/IconTabs';
+import ImageAvatars from '../components/MUI/ImageAvatars';
+import InteractiveList from '../components/MUI/IntetractiveList';
+import Progress from '../components/MUI/Progress';
+import RecipeReviewCard from '../components/MUI/RecipeReviewCard';
+import Snackbar from '../components/MUI/Snackbar';
+import Switches from '../components/MUI/Switches';
+import SwitchList from '../components/MUI/SwitchList';
+import VerticalDividers from '../components/MUI/VerticalDividers';
 
 export default function PracticePage() {
   return (

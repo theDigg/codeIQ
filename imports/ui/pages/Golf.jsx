@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import CodeEditor from '../Components/CodeEditor';
+import CodeEditor from '../components/CodeEditor';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Session } from 'meteor/session';
-import Windows from '../Components/PaneWindows';
-import Rooms from '../Components/Rooms';
-import ChallengesCollection from '/imports/db/challenges';
+import Windows from '../components/PaneWindows';
+import Rooms from '../components/Rooms';
+import ChallengesCollection from '/imports/db/Challenges';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import { withStyles, makeStyles } from '@material-ui/core/styles';

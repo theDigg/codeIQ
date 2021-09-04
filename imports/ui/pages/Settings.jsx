@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Editor from '../Components/CodeEditor';
+import Editor from '../components/CodeEditor';
 import EditorOptions from '../settings/editorSettings.json';
 import { setSettings } from '../features/settings/settingsSlice';
 import { useDispatch } from 'react-redux';
-import LongMenu from '../Components/LongMenu';
+import LongMenu from '../components/LongMenu';
 import themes from '../themes/editor';
 
 const settings = `

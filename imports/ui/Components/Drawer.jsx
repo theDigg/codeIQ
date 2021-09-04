@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, Switch, Route } from 'react-router-dom';
 import { useTracker } from 'meteor/react-meteor-data';
+import { Roles } from 'meteor/alanning:roles';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
@@ -33,6 +33,8 @@ import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 
 const drawerWidth = 200;
 
@@ -139,7 +141,6 @@ export default function MiniDrawer({ children }) {
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
@@ -200,6 +201,24 @@ export default function MiniDrawer({ children }) {
                 <ListItemText primary="Account" />
               </ListItem>
             </StyledLink>
+            <StyledLink to="/dashboard">
+              <ListItem button key="dashboard">
+                <ListItemIcon>
+                  <DashboardIcon fontSize="medium" />
+                </ListItemIcon>
+                <ListItemText primary="Dashboard" />
+              </ListItem>
+            </StyledLink>
+            {Roles.userIsInRole(Meteor.userId(), 'admin') && (
+              <StyledLink to="/admin">
+                <ListItem button key="admin">
+                  <ListItemIcon>
+                    <SupervisorAccountIcon fontSize="medium" />
+                  </ListItemIcon>
+                  <ListItemText primary="Admin" />
+                </ListItem>
+              </StyledLink>
+            )}
             <Divider />
             <StyledLink to="/battle">
               <ListItem button key="Battle">

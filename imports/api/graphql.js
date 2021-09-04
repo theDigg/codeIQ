@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { startGraphQLServer } from 'meteor/quave:graphql/server';
-import Challenges from '../db/challenges';
+import Challenges from '../db/Challenges';
 import Rooms from '../db/rooms';
 
 const log = (error) => console.error('GraphQL server error', error);

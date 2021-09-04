@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import SimpleSchema from 'simpl-schema';
-import Challenges from '../db/challenges';
+import Challenges from '../db/Challenges';
 import piston from 'piston-client';
-import * as utils from '../utils/stringUtils'
+import * as utils from '../utils/stringUtils';
 // ! Need to run a separate server for this piston API for the final deployment
 // TODO: just remember to have the piston-client in node_modules post the content type:
 /*
@@ -109,35 +109,52 @@ Meteor.methods({
       throw new Meteor.Error('No challenge was found :(');
     } else {
       (async () => {
-        console.log(challengeId, code, challenge.tests);
-        let strippedCode = utils.removeComments(code)
-        console.log(strippedCode);
         const result = await client.execute(
           'javascript',
-          `
-
-          ${strippedCode};
-          console.log(${challenge.tests});
+          `${code};
+          console.log([${challenge.tests.map((test) => [JSON.stringify(test.description), test.test])}])
           `,
         );
-        Challenges.update(challengeId, {
-          $set: {
-            result,
-          },
-        });
-        const solutionLength = strippedCode.split` `.join``.length
-        console.log('solutionLength: ', solutionLength);
-        console.log(result);
-        console.log(JSON.parse(result.run.output));
-        if (JSON.parse(result.run.output).every((result) => result)) {
-          console.log('You passed!!');
-          Challenges.update(challengeId, {
-            $min: {
-              shortest: solutionLength
+        try {
+          let parseResults = JSON.parse(result.run.output.replace(/'/g, '"'));
+          let testResults = parseResults.reduce((acc, result, i, array) => {
+            if (typeof result === 'string') {
+              acc.push({
+                description: result,
+                result: array[i + 1],
+              });
             }
-          })
-        } else {
-          console.log('You failed!!');
+            return acc;
+          }, []);
+          console.log(testResults);
+          if (testResults.every((test) => test.result === true)) {
+            const strippedCode = utils.removeComments(code);
+            const solutionLength = strippedCode.split` `.join``.length;
+            Challenges.update(challengeId, {
+              $set: {
+                result,
+                testResults,
+                completed: true,
+              },
+              $min: {
+                shortestSolution: solutionLength,
+              },
+            });
+          } else {
+            Challenges.update(challengeId, {
+              $set: {
+                result,
+                testResults,
+              },
+            });
+          }
+        } catch (err) {
+          Challenges.update(challengeId, {
+            $set: {
+              result,
+              err,
+            },
+          });
         }
       })();
     }

@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import RoomsCollection from '../db/rooms';
-import ChallengesCollection from '../db/challenges';
+import ChallengesCollection from '../db/Challenges';
 
 const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 

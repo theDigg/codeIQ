@@ -1,21 +1,12 @@
-import React, { useState } from 'react';
-import { Switch, Route } from 'react-router-dom';
-// import styled from 'styled-components';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { Roles } from 'meteor/alanning:roles';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
 import { setAuth } from './features/auth/authSlice';
 import { useDispatch } from 'react-redux';
-// import { Session } from 'meteor/session';
-// import ChallengesCollection from '/imports/db/challenges';
-// import RoomsCollection from '/imports/db/rooms';
-// import Editor from '@monaco-editor/react';
-// import LoginForm from './LoginForm';
-// import SignupForm from './SignupForm';
-// import Rooms from './Rooms';
-// import PaneWindows from './PaneWindows';
-import PrivateRoute from './Components/PrivateRoute';
-import Drawer from './Components/Drawer';
-import Welcome from './pages/Welcome';
+import Drawer from './components/Drawer';
+import Landing from './pages/Landing';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Account from './pages/Account';
@@ -29,9 +20,12 @@ import Progress from './pages/Progress';
 import TopUsers from './pages/TopUsers';
 import Messages from './pages/Messages';
 import Settings from './pages/Settings';
+import Admin from './pages/Admin';
+import Dashboard from './pages/Dashboard';
+import NotFound from './pages/NotFound';
 import 'setimmediate';
-
 import { io } from 'socket.io-client';
+
 const socket = io();
 
 socket.on('connect', () => {
@@ -41,105 +35,73 @@ socket.on('connect', () => {
 
 socket.on('test', (message) => {
   console.log(message);
-})
+});
 
 socket.on('disconnect', () => {
   console.log(socket.id); // undefined
   console.log(socket.connected); // false
 });
 
-// Session.set('challenge', 'Fibonacci');
-
-// const toggleComplete = ({ _id, isCompleted }) => Meteor.call('challenges.setCompleted', _id, !isCompleted);
-
-// const deleteChallenge = ({ _id }) => Meteor.call('challenges.remove', _id);
-
-// const logout = () => Meteor.logout();
-
-// console.log(Session.get('challenge'));
-
-export const App = () => {
+const App = () => {
   const dispatch = useDispatch();
-  const user = useTracker(() => Meteor.user());
-  dispatch(setAuth(user));
-  const [showCompleted, setShowCompleted] = useState(false);
-  const [challengeTitle, setChallengeTitle] = useState('Fibonacci');
-  // const showCompletedFilter = { isCompleted: { $ne: true } }
-  // const userFilter = user ? { userId: user._id } : {}
-  // const pendingOnlyFilter = { ...showCompletedFilter, ...userFilter }
-  // const room = useTracker(() => {
-  //   if (!user) return [];
-  //   return RoomsCollection.findOne(
-  //     { _id: Session.get('room') },
-  //     // {
-  //     //   sort: { createdAt: -1 },
-  //     // }
-  //   );
-  // });
-  // // console.log(user, room);
-  // const pendingChallengeCount = useTracker(() => {
-  //   if (!user) {
-  //     return 0;
-  //   }
-
-  //   return ChallengesCollection.find({}).count();
-  // });
-
-  function handleEditorChange(value, event) {
-    Meteor.call('challenges.edit', room.challenge._id, value);
-  }
-
-  // const editor = <Editor height="90vh" defaultLanguage="javascript" value={room?.challenge?.solution} onChange={handleEditorChange} />;
-  // const panes = <PaneWindows topLeft={<Rooms />} topRight={editor} bottomLeft={editor} bottomRight={editor} />;
+  useTracker(() => dispatch(setAuth(Meteor.user())));
 
   return (
-    <>
+    <Router>
       <Drawer>
         <Switch>
-          <Route exact path="/">
-            <Welcome />
-          </Route>
-          <Route path="/signup">
-            <Signup />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <PrivateRoute path="/account">
-            <Account user={user} />
-          </PrivateRoute>
-          <PrivateRoute path="/battle">
-            <Battle user={user} />
-          </PrivateRoute>
-          <PrivateRoute path="/golf">
-            <Golf user={user} />
-          </PrivateRoute>
-          <PrivateRoute path="/duel">
-            <Duel />
-          </PrivateRoute>
-          <PrivateRoute path="/time-trial">
-            <TimeTrial />
-          </PrivateRoute>
-          <PrivateRoute path="/practice">
-            <Practice />
-          </PrivateRoute>
-          <PrivateRoute path="/leaderboard">
-            <Leaderboard />
-          </PrivateRoute>
-          <PrivateRoute path="/top-users">
-            <TopUsers />
-          </PrivateRoute>
-          <PrivateRoute path="/progress">
-            <Progress />
-          </PrivateRoute>
-          <PrivateRoute path="/messages">
-            <Messages />
-          </PrivateRoute>
-          <PrivateRoute path="/settings">
-            <Settings />
-          </PrivateRoute>
+          <Route exact path="/" component={Landing} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/login" component={Login} />
+          <ProtectedRoute path="/account" component={Account} />
+          <ProtectedRoute path="/dashboard" component={Dashboard} />
+          <ProtectedRoute path="/battle" component={Battle} />
+          <ProtectedRoute path="/golf" component={Golf} />
+          <ProtectedRoute path="/duel" component={Duel} />
+          <ProtectedRoute path="/time-trial" component={TimeTrial} />
+          <ProtectedRoute path="/practice" component={Practice} />
+          <ProtectedRoute path="/leaderboard" component={Leaderboard} />
+          <ProtectedRoute path="/top-users" component={TopUsers} />
+          <ProtectedRoute path="/progress" component={Progress} />
+          <ProtectedRoute path="/messages" component={Messages} />
+          <ProtectedRoute path="/settings" component={Settings} />
+          <AdminProtectedRoute path="/admin" component={Admin} />
+          <Route component={NotFound} />
         </Switch>
       </Drawer>
-    </>
+    </Router>
   );
 };
+
+/**
+ * ProtectedRoute (see React Router v4 sample)
+ * Checks for Meteor login before routing to the requested page, otherwise goes to signin page.
+ * @param {any} { component: Component, ...rest }
+ */
+const ProtectedRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={(props) => {
+      const isLogged = Meteor.userId() !== null;
+      return isLogged ? <Component {...props} /> : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />;
+    }}
+  />
+);
+
+/**
+ * AdminProtectedRoute (see React Router v4 sample)
+ * Checks for Meteor login and admin role before routing to the requested page, otherwise goes to signin page.
+ * @param {any} { component: Component, ...rest }
+ */
+const AdminProtectedRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={(props) => {
+      const isLogged = Meteor.userId() !== null;
+      const isAdmin = Roles.userIsInRole(Meteor.userId(), 'admin');
+      return isLogged && isAdmin ? <Component {...props} /> : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />;
+    }}
+  />
+);
+
+export default App;
