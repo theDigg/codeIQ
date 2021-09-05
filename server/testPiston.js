@@ -15,67 +15,45 @@ const testChallenge = {
   ],
 };
 
-(async () => {
-  const results = testChallenge.tests.map(async (test) => {
-    const result = await client.execute(
-      'javascript',
-      `${testChallenge.solution};
-        console.log([${JSON.stringify(test.description)}, ${test.test}])`,
-    );
-    return result;
-  });
-  await Promise.all(results);
-  let finalResults = []
-  await results.forEach((result) => {
-    result.then(res => {
-        console.log(res);
-        finalResults.push(res.run.output)
-    })
-  });
-  console.log(finalResults);
-  finalResults.forEach(result => {
-      console.log(result.split('\n'))
-  })
+console.log(testChallenge.solution.matchAll(/console\.log\(([^)]+)\)/g));
 
-  //   try {
-  // let parseResults = JSON.parse(result.run.output.replace(/'/g, '"'));
-  // let testResults = parseResults.reduce((acc, result, i, array) => {
-  //   if (typeof result === 'string') {
-  //     acc.push({
-  //       description: result,
-  //       result: array[i + 1],
-  //     });
-  //   }
-  //   return acc;
-  // }, []);
-  // console.log(testResults);
-  //     if (testResults.every((test) => test.result === true)) {
-  //       const strippedCode = utils.removeComments(code);
-  //       const solutionLength = strippedCode.split` `.join``.length;
-  //       Challenges.update(challengeId, {
-  //         $set: {
-  //           result,
-  //           testResults,
-  //           completed: true,
-  //         },
-  //         $min: {
-  //           shortestSolution: solutionLength,
-  //         },
-  //       });
-  //     } else {
-  //       Challenges.update(challengeId, {
-  //         $set: {
-  //           result,
-  //           testResults,
-  //         },
-  //       });
-  //     }
-  //   } catch (err) {
-  //     Challenges.update(challengeId, {
-  //       $set: {
-  //         result,
-  //         err,
-  //       },
-  //     });
-  //   }
+const parseTests = (output) => {
+  let parsed = [];
+  let userConsole = [];
+  let outputArray = output.split('\n');
+  console.log(outputArray);
+  let testCount = 1;
+  outputArray.forEach((item, i) => {
+    try {
+      let test = JSON.parse(item);
+      if (typeof test === 'object') {
+        parsed.push(test);
+        testCount++;
+      } else {
+        userConsole.push({ test: testCount, output: test });
+      }
+    } catch (e) {
+      // console.log(e);
+    }
+  });
+  return {
+    results: parsed,
+    consoleOutput: userConsole,
+  };
+};
+
+(async () => {
+  let mappedTests = testChallenge.tests.map((obj, i) => {
+    // return `console.log(${JSON.stringify(obj.description)}, ${obj.test})`;
+    return `console.log(JSON.stringify(["test" + ${i + 1}, ${obj.test}]))`;
+  });
+  const result = await client.execute(
+    'javascript',
+    `${testChallenge.solution};
+    ${mappedTests}
+    `,
+  );
+  console.log(result.run.output);
+  console.log(parseTests(result.run.output));
 })();
+// console.log([${testChallenge.tests.map((test) => [JSON.stringify(test.description), test.test])}])
