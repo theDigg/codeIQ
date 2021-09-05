@@ -5,6 +5,7 @@ import { useTracker } from 'meteor/react-meteor-data';
 import { Session } from 'meteor/session';
 import Windows from '../components/PaneWindows';
 import Rooms from '../components/Rooms';
+import TestResults from '../components/TestResults/TestResults';
 import ChallengesCollection from '/imports/db/Challenges';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
@@ -98,7 +99,7 @@ export default function GolfPage({ user }) {
     <Windows
       topLeft={<ChallengeList challenges={challenges} handleChallengeClick={handleChallengeClick} />}
       topRight={myEditor}
-      bottomLeft={<TestList tests={challenge?.testDescriptions && JSON.parse(challenge.testDescriptions)} />}
+      bottomLeft={<TestResults testResults={challenge?.testResults} tests={challenge?.tests} />}
       bottomRight={<Results onSubmit={handleSubmitChallenge} />}
     />
   );

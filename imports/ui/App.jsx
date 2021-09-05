@@ -24,23 +24,23 @@ import Admin from './pages/Admin';
 import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
 import 'setimmediate';
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 
-const socket = io();
+// const socket = io();
 
-socket.on('connect', () => {
-  console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-  console.log(socket.connected); // true
-});
+// socket.on('connect', () => {
+//   console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+//   console.log(socket.connected); // true
+// });
 
-socket.on('test', (message) => {
-  console.log(message);
-});
+// socket.on('test', (message) => {
+//   console.log(message);
+// });
 
-socket.on('disconnect', () => {
-  console.log(socket.id); // undefined
-  console.log(socket.connected); // false
-});
+// socket.on('disconnect', () => {
+//   console.log(socket.id); // undefined
+//   console.log(socket.connected); // false
+// });
 
 const App = () => {
   const dispatch = useDispatch();

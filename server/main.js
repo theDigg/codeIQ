@@ -11,6 +11,7 @@ import '/imports/api/roomPublications';
 import './service-config';
 import '/imports/api/graphql';
 import './monti';
+import './testPiston';
 
 const insertRoom = (title, user, url) => {
   RoomsCollection.insert({
