@@ -22,6 +22,7 @@ import Messages from './pages/Messages';
 import Settings from './pages/Settings';
 import Admin from './pages/Admin';
 import Dashboard from './pages/Dashboard';
+import CreateChallenge from './pages/CreateChallenge';
 import NotFound from './pages/NotFound';
 import 'setimmediate';
 // import { io } from 'socket.io-client';
@@ -65,6 +66,7 @@ const App = () => {
           <ProtectedRoute path="/progress" component={Progress} />
           <ProtectedRoute path="/messages" component={Messages} />
           <ProtectedRoute path="/settings" component={Settings} />
+          <ProtectedRoute path="/challenge/create" component={CreateChallenge} />
           <AdminProtectedRoute path="/admin" component={Admin} />
           <Route component={NotFound} />
         </Switch>

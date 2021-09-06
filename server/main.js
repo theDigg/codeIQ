@@ -70,7 +70,7 @@ Meteor.startup(() => {
     });
   }
 
-  if (Challenges.find().count() !== 3) {
+  if (Challenges.find().count() !== 1) {
     seedChallenges();
   }
 });

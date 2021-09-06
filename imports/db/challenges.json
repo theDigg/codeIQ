@@ -1,44 +1,64 @@
 [
   {
-    "title": "Fibonacci",
-    "body": "Write a function fibonacci that takes an integer n and returns the nth number of the fibonacci sequence. DO NOT USE RECURSION. Code must run in O(n) time.",
-    "solution": "function fibonacci(n) {\n\n}",
-    "tests": [
-      { "description": "fibonacci should be a function", "test": "typeof fibonacci === 'function'" },
-      { "description": "fibonacci should return a number", "test": "typeof fibonacci(3) === 'number'" },
-      { "description": "the 0th fibonacci number is 0", "test": "fibonacci(0) === 0" },
-      { "description": "the 1st fibonacci number is 1", "test": "fibonacci(1) === 1" },
-      { "description": "the 2nd fibonacci number is 1", "test": "fibonacci(2) === 1" },
-      { "description": "the 3rd fibonacci number is 2", "test": "fibonacci(3) === 2" },
-      { "description": "the 10th fibonacci number is 55", "test": "fibonacci(10) === 55" },
-      { "description": "the 20th fibonacci number is 6765", "test": "fibonacci(20) === 6765" },
-      { "description": "the 40th fibonacci number is 102334155", "test": "fibonacci(40) === 102334155" }
-    ]
-  },
-  {
-    "title": "sumArray",
-    "body": "Write a function sumArray that takes an array and returns the sum of all elements in the array",
-    "solution": "function sumArray(arr) {\n\n}",
-    "tests": [
-      { "description": "sumArray should be a function", "test": "typeof sumArray === 'function'" },
-      { "description": "sumArray should return a number", "test": "typeof sumArray([1,2,3]) === 'number'" },
-      { "description": "sumArray([1,2,3]) should equal 6", "test": "sumArray([1,2,3]) === 6" },
-      { "description": "sumArray([-3,0,3,3]) should equal 3", "test": "sumArray([-3,0,3,3]) === 3" },
-      { "description": "sumArray([4,6,-5,12,50]) should equal 67", "test": "sumArray([4,6,-5,12,50]) === 67" },
-      { "description": "sumArray([4,4,4,4]) should equal 16", "test": "sumArray([4,4,4,4]) === 16" }
-    ]
-  },
-  {
-    "title": "isEven",
-    "body": "Write a function isEven that takes a number and returns a boolean representing whether or not a number is even.",
-    "solution": "function isEven(n) {\n\n}",
-    "tests": [
-      { "description": "isEven should be a function", "test": "typeof isEven === 'function'" },
-      { "description": "isEven should return a boolean", "test": "typeof isEven(2) === 'boolean'" },
-      { "description": "isEven(6) should be true", "test": "isEven(6) === true" },
-      { "description": "isEven(3) should be false", "test": "isEven(3) === false" },
-      { "description": "isEven(9) should be false", "test": "isEven(9) === false" },
-      { "description": "isEven(3242566578) should be true", "test": "isEven(3242566578) === true" }
-    ]
+    "name": "isEven",
+    "description": "Given an integer `n`, return whether or not `n` is an even number",
+    "authorSolution": {
+      "sources": [
+        {
+          "source": "function isEven(n) {\n return n % 2 == 0 \n}",
+          "language": "js"
+        }
+      ]
+    },
+    "source": "function isEven(n) {\n\n}",
+    "language": "js",
+    "io": {
+      "input": [
+        {
+          "description": "An integer",
+          "name": "n",
+          "type": "integer"
+        }
+      ],
+      "output": {
+        "description": "A boolean for whether n is even or not",
+        "type": "boolean"
+      },
+      "tests": [
+        {
+          "id": 1,
+          "input": [6],
+          "output": true
+        },
+        {
+          "id": 2,
+          "input": [3],
+          "output": false
+        },
+        {
+          "id": 3,
+          "input": [9],
+          "output": false
+        },
+        {
+          "id": 4,
+          "input": [240],
+          "output": true
+        },
+        {
+          "id": 5,
+          "input": [2455],
+          "output": false
+        },
+        {
+          "id": 6,
+          "input": [2400258],
+          "output": true
+        }
+      ],
+      "timeLimits": {
+        "js": 9000
+      }
+    }
   }
 ]

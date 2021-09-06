@@ -14,6 +14,31 @@ import * as utils from '../utils/stringUtils';
 const client = piston({ server: 'http://localhost:2000' }); // If running the piston API locally
 // const client = piston({ server: 'https://emkc.org' });
 
+const parseTests = (output) => {
+  let tests = [];
+  let consoleOutput = [];
+  let outputArray = output.split('\n');
+  let testCount = 1;
+  outputArray.forEach((item, i) => {
+    try {
+      let test = JSON.parse(item);
+      console.log(test);
+      if (typeof test === 'object' && 'passed' in test) {
+        tests.push(test);
+        testCount++;
+      } else {
+        consoleOutput.push({ test: testCount, output: test });
+      }
+    } catch (e) {
+      consoleOutput.push({ test: testCount, output: item });
+    }
+  });
+  return {
+    tests,
+    consoleOutput,
+  };
+};
+
 Meteor.methods({
   'challenges.insert'(title) {
     check(title, String);
@@ -109,31 +134,25 @@ Meteor.methods({
       throw new Meteor.Error('No challenge was found :(');
     } else {
       (async () => {
+        let mappedTests = challenge.io.tests.map(
+          (test, i) =>
+            `console.log(JSON.stringify({ "test": ${test.id}, "output": output = ${challenge.name}(${test.input}), "passed": output === ${test.output} }))`,
+        );
         const result = await client.execute(
           'javascript',
-          `${code};
-          console.log([${challenge.tests.map((test) => [JSON.stringify(test.description), test.test])}])
-          `,
+          `${code}
+           ${mappedTests}`,
         );
         try {
-          let parseResults = JSON.parse(result.run.output.replace(/'/g, '"'));
-          let testResults = parseResults.reduce((acc, result, i, array) => {
-            if (typeof result === 'string') {
-              acc.push({
-                description: result,
-                result: array[i + 1],
-              });
-            }
-            return acc;
-          }, []);
-          console.log(testResults);
-          if (testResults.every((test) => test.result === true)) {
+          const { tests, consoleOutput } = parseTests(result.run.output);
+          console.log(tests, consoleOutput);
+          if (tests.every((test) => test.passed === true)) {
             const strippedCode = utils.removeComments(code);
             const solutionLength = strippedCode.split` `.join``.length;
             Challenges.update(challengeId, {
               $set: {
-                result,
-                testResults,
+                tests,
+                consoleOutput,
                 completed: true,
               },
               $min: {
@@ -143,15 +162,16 @@ Meteor.methods({
           } else {
             Challenges.update(challengeId, {
               $set: {
-                result,
-                testResults,
+                tests,
+                consoleOutput,
               },
             });
           }
         } catch (err) {
           Challenges.update(challengeId, {
             $set: {
-              result,
+              tests,
+              consoleOutput,
               err,
             },
           });

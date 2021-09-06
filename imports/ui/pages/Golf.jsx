@@ -85,7 +85,7 @@ export default function GolfPage({ user }) {
 
   function handleChallengeClick(challenge) {
     dispatch(setChallenge(challenge));
-    setSolution(challenge.solution);
+    setSolution(challenge.source);
   }
 
   function handleSubmitChallenge() {
@@ -99,8 +99,13 @@ export default function GolfPage({ user }) {
     <Windows
       topLeft={<ChallengeList challenges={challenges} handleChallengeClick={handleChallengeClick} />}
       topRight={myEditor}
-      bottomLeft={<TestResults testResults={challenge?.testResults} tests={challenge?.tests} />}
-      bottomRight={<Results onSubmit={handleSubmitChallenge} />}
+      bottomLeft={<TestList consoleOutput={challenge?.consoleOutput} />}
+      bottomRight={
+        <>
+          <Results onSubmit={handleSubmitChallenge} />
+          <TestResults challenge={challenge} />
+        </>
+      }
     />
   );
 
@@ -124,7 +129,7 @@ const Challenge = ({ challenge, handleChallengeClick }) => {
   return (
     <div>
       <ColorButton variant="contained" color="primary" className={classes.margin} onClick={() => handleChallengeClick(challenge)}>
-        {challenge.title}
+        {challenge.name}
       </ColorButton>
     </div>
   );
@@ -138,15 +143,21 @@ const ChallengeList = ({ challenges, handleChallengeClick }) => (
   </div>
 );
 
-const Test = ({ test }) => {
+const Test = ({ test, output }) => {
   const classes = useStyles();
   return (
     <div>
-      <ColorButton color="primary" className={classes.margin}>
-        {test}
+      <ColorButton className={classes.margin}>
+        Test {test}: {`${output}`}
       </ColorButton>
     </div>
   );
 };
 
-const TestList = ({ tests }) => <div>{tests && tests.map((test, i) => <Test key={i} test={test} />)}</div>;
+const TestList = ({ consoleOutput }) => (
+  <div>
+    {consoleOutput?.map(({ test, output }, i) => (
+      <Test key={i} test={test} output={output} />
+    ))}
+  </div>
+);
