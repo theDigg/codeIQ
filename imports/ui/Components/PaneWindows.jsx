@@ -12,7 +12,7 @@ export default ({ topLeft, topRight, bottomLeft, bottomRight }) => {
       <ReflexElement>
         <StyledReflexContainer orientation="horizontal">
           <ReflexElement propagateDimensionsRate={200} propagateDimensions={true} flex={0.5}>
-            <div className="pane-content">
+            <div className="pane-content" style={{ maxWidth: '100vw' }}>
               {/* <label>Top Left Pane</label> */}
               {topLeft}
             </div>
@@ -20,8 +20,8 @@ export default ({ topLeft, topRight, bottomLeft, bottomRight }) => {
 
           <ReflexSplitter />
 
-          <ReflexElement className="bottom-pane">
-            <div className="pane-content">
+          <ReflexElement className="bottom-pane" propagateDimensions={true}>
+            <div className="pane-content" style={{ maxWidth: '100vw' }}>
               {/* <label>Bottom Left Pane</label> */}
               {bottomLeft}
             </div>
@@ -34,7 +34,7 @@ export default ({ topLeft, topRight, bottomLeft, bottomRight }) => {
       <ReflexElement className="right-pane" flex={0.5}>
         <StyledReflexContainer orientation="horizontal">
           <ReflexElement propagateDimensionsRate={200} propagateDimensions={true} flex={0.5}>
-            <div className="pane-content">
+            <div className="pane-content" style={{ maxWidth: '100vw' }}>
               {/* <label> Top Right Pane </label> */}
               {topRight}
             </div>
@@ -42,8 +42,8 @@ export default ({ topLeft, topRight, bottomLeft, bottomRight }) => {
 
           <ReflexSplitter />
 
-          <ReflexElement className="bottom-pane">
-            <div className="pane-content">
+          <ReflexElement className="bottom-pane" propagateDimensions={true}>
+            <div className="pane-content" style={{ maxWidth: '100vw' }}>
               {/* <label>Bottom Right Pane</label> */}
               {bottomRight}
             </div>

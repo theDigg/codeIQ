@@ -54,7 +54,7 @@
     "horizontalSliderSize": 10,
     "scrollByPage": false,
     "useShadows": true,
-    "vertical": "hidden",
+    "vertical": "auto",
     "verticalHasArrows": false,
     "verticalScrollbarSize": 10,
     "verticalSliderSize": 10

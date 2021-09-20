@@ -15,8 +15,8 @@ const client = piston({ server: 'http://localhost:2000' }); // If running the pi
 // const client = piston({ server: 'https://emkc.org' });
 
 const parseTests = (output) => {
-  let tests = [];
-  let consoleOutput = [];
+  let tests = {};
+  let consoleOutput = {};
   let outputArray = output.split('\n');
   let testCount = 1;
   outputArray.forEach((item, i) => {
@@ -24,13 +24,15 @@ const parseTests = (output) => {
       let test = JSON.parse(item);
       console.log(test);
       if (typeof test === 'object' && 'passed' in test) {
-        tests.push(test);
+        tests[testCount] = test;
         testCount++;
       } else {
-        consoleOutput.push({ test: testCount, output: test });
+        if (!consoleOutput[testCount]) consoleOutput[testCount] = [test];
+        else consoleOutput[testCount] = [...consoleOutput[testCount], test];
       }
     } catch (e) {
-      consoleOutput.push({ test: testCount, output: item });
+      if (!consoleOutput[testCount] && item) consoleOutput[testCount] = [item];
+      else if (item) consoleOutput[testCount] = [...consoleOutput[testCount], item];
     }
   });
   return {
@@ -118,7 +120,7 @@ Meteor.methods({
     });
   },
 
-  'challenges.submit'(challengeId, code) {
+  'challenges.submit': async function (challengeId, code) {
     check(challengeId, String);
     check(code, String);
 
@@ -133,50 +135,39 @@ Meteor.methods({
     if (!challenge) {
       throw new Meteor.Error('No challenge was found :(');
     } else {
-      (async () => {
-        let mappedTests = challenge.io.tests.map(
-          (test, i) =>
-            `console.log(JSON.stringify({ "test": ${test.id}, "output": output = ${challenge.name}(${test.input}), "passed": output === ${test.output} }))`,
-        );
-        const result = await client.execute(
-          'javascript',
-          `${code}
+      let mappedTests = challenge.io.tests.map(
+        (test, i) =>
+          `console.log(JSON.stringify({ "test": ${test.id}, "output": output = ${challenge.name}(${test.input}), "passed": output === ${test.output} }))`,
+      );
+      const result = await client.execute(
+        'javascript',
+        `${code}
            ${mappedTests}`,
-        );
-        try {
-          const { tests, consoleOutput } = parseTests(result.run.output);
-          console.log(tests, consoleOutput);
-          if (tests.every((test) => test.passed === true)) {
-            const strippedCode = utils.removeComments(code);
-            const solutionLength = strippedCode.split` `.join``.length;
-            Challenges.update(challengeId, {
-              $set: {
-                tests,
-                consoleOutput,
-                completed: true,
-              },
-              $min: {
-                shortestSolution: solutionLength,
-              },
-            });
-          } else {
-            Challenges.update(challengeId, {
-              $set: {
-                tests,
-                consoleOutput,
-              },
-            });
-          }
-        } catch (err) {
+        {
+          compileTimeout: 10000,
+          runTimeout: 4000,
+          compileMemoryLimit: -1,
+          runMemoryLimit: -1,
+        },
+      );
+      const { tests, consoleOutput } = parseTests(result.run.output);
+      try {
+        if (Object.values(tests).every((test) => test.passed === true)) {
+          const strippedCode = utils.removeComments(code);
+          const solutionLength = strippedCode.split` `.join``.length;
           Challenges.update(challengeId, {
             $set: {
-              tests,
-              consoleOutput,
-              err,
+              completed: true,
+            },
+            $min: {
+              shortestSolution: solutionLength,
             },
           });
         }
-      })();
+      } catch (err) {
+        return { tests, consoleOutput, err };
+      }
+      return { tests, consoleOutput };
     }
   },
 });

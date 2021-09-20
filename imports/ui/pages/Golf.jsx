@@ -79,6 +79,11 @@ export default function GolfPage({ user }) {
     dispatch(setChallenges(challenges));
   }, []);
 
+  useTracker(() => {
+    let challengeChoice = ChallengesCollection.findOne({ _id: challenge.id });
+    dispatch(setChallenge(challengeChoice));
+  }, []);
+
   function handleEditorChange(value, event) {
     setSolution(value);
   }
@@ -90,26 +95,26 @@ export default function GolfPage({ user }) {
 
   function handleSubmitChallenge() {
     console.log(challenge._id, solution);
-    Meteor.call('challenges.submit', challenge._id, solution);
+    Meteor.call('challenges.submit', challenge._id, solution, (error, result) => {
+      console.log('error: ', error, 'result: ', result);
+      dispatch(setResults(result));
+    });
   }
 
   const myEditor = <CodeEditor handleEditorChange={handleEditorChange} solution={solution} lang="javascript" />;
 
-  const panes = (
-    <Windows
-      topLeft={<ChallengeList challenges={challenges} handleChallengeClick={handleChallengeClick} />}
-      topRight={myEditor}
-      bottomLeft={<TestList consoleOutput={challenge?.consoleOutput} />}
-      bottomRight={
-        <>
-          <Results onSubmit={handleSubmitChallenge} />
-          <TestResults challenge={challenge} />
-        </>
+  return (
+    <div>
+      {
+        <Windows
+          topLeft={<ChallengeList challenges={challenges} handleChallengeClick={handleChallengeClick} />}
+          topRight={myEditor}
+          bottomLeft={<Results onSubmit={handleSubmitChallenge} />}
+          bottomRight={<TestResults console={results?.consoleOutput && results.consoleOutput} tests={results?.tests && results.tests} />}
+        />
       }
-    />
+    </div>
   );
-
-  return <div>{panes}</div>;
 }
 
 const Results = ({ onSubmit }) => {
@@ -155,9 +160,5 @@ const Test = ({ test, output }) => {
 };
 
 const TestList = ({ consoleOutput }) => (
-  <div>
-    {consoleOutput?.map(({ test, output }, i) => (
-      <Test key={i} test={test} output={output} />
-    ))}
-  </div>
+  <div>{consoleOutput && Object.values(consoleOutput)?.map(({ test, output }, i) => <Test key={i} test={test} output={output} />)}</div>
 );
