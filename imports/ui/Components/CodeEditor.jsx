@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import Editor, { useMonaco } from '@monaco-editor/react';
-import highlineTheme from '../themes/editor/highline.json';
-import themes from '../themes/editor';
 import { useSelector } from 'react-redux';
 
 export default function CodeEditor({ solution, handleEditorChange, lang }) {

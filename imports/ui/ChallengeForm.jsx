@@ -16,12 +16,7 @@ export default () => {
 
   return (
     <form className="challenge-form" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Type to add new challenges"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
+      <input type="text" placeholder="Type to add new challenges" value={title} onChange={(e) => setTitle(e.target.value)} />
 
       <button type="submit">Add Challenge</button>
     </form>

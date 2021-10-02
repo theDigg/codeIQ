@@ -1,19 +1,37 @@
 import React from 'react';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import { useStyles } from './styles';
+import Box from '@mui/material/Box';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
 import { useSelector } from 'react-redux';
 import TestTabs from './Tabs';
 
+const classes = {
+  root: {
+    width: '100%',
+    minWidth: '300px',
+  },
+  heading: {
+    flexBasis: '33.33%',
+    flexShrink: 0,
+  },
+  secondaryHeading: {
+    fontSize: '15px',
+  },
+  output: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+  },
+};
+
 export default function TestResults({ console, tests }) {
-  const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const { challenge } = useSelector((state) => state.golf);
 
@@ -27,20 +45,20 @@ export default function TestResults({ console, tests }) {
       <Accordion
         expanded={expanded === `test${i}`}
         onChange={handleChange(`test${i}`)}
-        style={{ border: `1px solid ${tests && tests[testInfo.id].passed ? 'green' : 'red'}`, margin: '5px' }}
+        sx={{ border: `1px solid ${tests && tests[testInfo.id].passed ? 'green' : 'red'}`, margin: '5px' }}
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`test${i}bh-content`} id={`test${i}bh-header`}>
-          <Typography className={classes.heading}>Test {i + 1}</Typography>
-          <Typography className={classes.secondaryHeading}>
+          <Typography sx={classes.heading}>Test {i + 1}</Typography>
+          <Typography sx={classes.secondaryHeading}>
             Input: <code>{testInfo.input}</code>
           </Typography>
         </AccordionSummary>
-        <AccordionDetails style={{ display: 'flex', flexDirection: 'column' }}>
-          <Typography className={classes.secondaryHeading}>
+        <AccordionDetails sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Typography sx={classes.secondaryHeading}>
             Expected Output: <code>{`${testInfo.output}`}</code>
           </Typography>
           {tests && tests[testInfo.id] && (
-            <Typography className={classes.secondaryHeading}>
+            <Typography sx={classes.secondaryHeading}>
               Your Output: <code>{`${tests[testInfo.id].output}`}</code>
             </Typography>
           )}
@@ -49,7 +67,7 @@ export default function TestResults({ console, tests }) {
     ));
 
   const rawOutput = (
-    <List className={classes.output} aria-label="test-output">
+    <List sx={classes.output} aria-label="test-output">
       <ListItem dense={true}>
         <ListItemText primary="Console output: " />
       </ListItem>
@@ -61,7 +79,7 @@ export default function TestResults({ console, tests }) {
               <ListItemText primary={`----------- TEST ${testNum} -----------`} />
             </ListItem>
             {console[testNum].map((output) => (
-              <ListItem dense={true} style={{ color: `${tests[testNum].passed ? 'green' : 'red'}` }}>
+              <ListItem dense={true} sx={{ color: `${tests[testNum].passed ? 'green' : 'red'}` }}>
                 <ListItemText primary={JSON.stringify(output)} />
               </ListItem>
             ))}
@@ -71,8 +89,8 @@ export default function TestResults({ console, tests }) {
   );
 
   return (
-    <div className={classes.root}>
+    <Box sx={{ width: '100%', minWidth: '300px' }}>
       <TestTabs custom={customOutput} raw={rawOutput} />
-    </div>
+    </Box>
   );
 }

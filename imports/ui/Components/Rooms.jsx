@@ -68,22 +68,22 @@ export default () => {
   const user = useTracker(() => Meteor.user());
   const [roomName, setRoomName] = React.useState('');
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-      if (!roomName) return;
+    if (!roomName) return;
 
-      addRoomMutation({
-        variables: {
-          title: roomName,
-        },
-        refetchQueries: () => ['Rooms'],
-      })
-        .then(() => console.log('Room added with success'))
-        .catch((e) => console.error('Error trying to add room', e));
+    addRoomMutation({
+      variables: {
+        title: roomName,
+      },
+      refetchQueries: () => ['Rooms'],
+    })
+      .then(() => console.log('Room added with success'))
+      .catch((e) => console.error('Error trying to add room', e));
 
-      setRoomName('');
-    };
+    setRoomName('');
+  };
 
   return (
     <ScrollContainer>

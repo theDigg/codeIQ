@@ -23,8 +23,8 @@ export default () => {
 
   const submit = (e) => {
     e.preventDefault();
-    Accounts.createUser({username, password}, console.log);
-    Meteor.loginWithPassword(username, password)
+    Accounts.createUser({ username, password }, console.log);
+    Meteor.loginWithPassword(username, password);
   };
 
   return (

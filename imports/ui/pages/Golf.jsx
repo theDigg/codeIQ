@@ -8,31 +8,13 @@ import Rooms from '../components/Rooms';
 import TestResults from '../components/TestResults/TestResults';
 import ChallengesCollection from '/imports/db/Challenges';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from '@material-ui/core/Button';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
+import Button from '@mui/material/Button';
+import { red } from '@mui/material/colors';
 import { setChallenges, setChallenge, setResults } from '../features/golf/golfSlice';
 
 // import ReactMarkdown from 'react-markdown';
 // import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 // import { darcula } from 'react-syntax-highlighter/dist/esm/styles/prism';
-
-const ColorButton = withStyles((theme) => ({
-  root: {
-    color: theme.palette.getContrastText(red[500]),
-    backgroundColor: red[500],
-    '&:hover': {
-      backgroundColor: red[700],
-    },
-  },
-}))(Button);
-
-const useStyles = makeStyles((theme) => ({
-  margin: {
-    margin: theme.spacing(1),
-  },
-}));
-
 // const markdown = `Here is some JavaScript code:
 
 // ~~~js
@@ -118,24 +100,22 @@ export default function GolfPage({ user }) {
 }
 
 const Results = ({ onSubmit }) => {
-  const classes = useStyles();
   return (
     <div>
       <h1> Results </h1>
-      <ColorButton variant="contained" color="primary" className={classes.margin} onClick={() => onSubmit()}>
+      <Button variant="contained" color="primary" sx={{ m: 1 }} onClick={() => onSubmit()}>
         Submit
-      </ColorButton>
+      </Button>
     </div>
   );
 };
 
 const Challenge = ({ challenge, handleChallengeClick }) => {
-  const classes = useStyles();
   return (
     <div>
-      <ColorButton variant="contained" color="primary" className={classes.margin} onClick={() => handleChallengeClick(challenge)}>
+      <Button variant="contained" color="primary" sx={{ m: 1 }} onClick={() => handleChallengeClick(challenge)}>
         {challenge.name}
-      </ColorButton>
+      </Button>
     </div>
   );
 };
@@ -152,9 +132,9 @@ const Test = ({ test, output }) => {
   const classes = useStyles();
   return (
     <div>
-      <ColorButton className={classes.margin}>
+      <Button sx={{ m: 1 }}>
         Test {test}: {`${output}`}
-      </ColorButton>
+      </Button>
     </div>
   );
 };
