@@ -1,11 +1,14 @@
 import React from 'react';
+import { ThemeProvider } from '@mui/material/styles';
+import { lightTheme, darkTheme } from './themes';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { Roles } from 'meteor/alanning:roles';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
 import { setAuth } from './features/auth/authSlice';
-import { useDispatch } from 'react-redux';
-import Drawer from './components/Drawer';
+// import { setMuiTheme } from './features/settings/settingsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import Drawer from './components/MiniDrawer';
 import Landing from './pages/Landing';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
@@ -45,33 +48,36 @@ import 'setimmediate';
 
 const App = () => {
   const dispatch = useDispatch();
+  const { muiTheme } = useSelector((state) => state.settings);
   useTracker(() => dispatch(setAuth(Meteor.user())));
 
   return (
-    <Router>
-      <Drawer>
-        <Switch>
-          <Route exact path="/" component={Landing} />
-          <Route path="/signup" component={Signup} />
-          <Route path="/login" component={Login} />
-          <ProtectedRoute path="/account" component={Account} />
-          <ProtectedRoute path="/dashboard" component={Dashboard} />
-          <ProtectedRoute path="/battle" component={Battle} />
-          <ProtectedRoute path="/golf" component={Golf} />
-          <ProtectedRoute path="/duel" component={Duel} />
-          <ProtectedRoute path="/time-trial" component={TimeTrial} />
-          <ProtectedRoute path="/practice" component={Practice} />
-          <ProtectedRoute path="/leaderboard" component={Leaderboard} />
-          <ProtectedRoute path="/top-users" component={TopUsers} />
-          <ProtectedRoute path="/progress" component={Progress} />
-          <ProtectedRoute path="/messages" component={Messages} />
-          <ProtectedRoute path="/settings" component={Settings} />
-          <ProtectedRoute path="/challenge/create" component={CreateChallenge} />
-          <AdminProtectedRoute path="/admin" component={Admin} />
-          <Route component={NotFound} />
-        </Switch>
-      </Drawer>
-    </Router>
+    <ThemeProvider theme={muiTheme === 'light' ? lightTheme : darkTheme}>
+      <Router>
+        <Drawer>
+          <Switch>
+            <Route exact path="/" component={Landing} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/login" component={Login} />
+            <ProtectedRoute path="/account" component={Account} />
+            <ProtectedRoute path="/dashboard" component={Dashboard} />
+            <ProtectedRoute path="/battle" component={Battle} />
+            <ProtectedRoute path="/golf" component={Golf} />
+            <ProtectedRoute path="/duel" component={Duel} />
+            <ProtectedRoute path="/time-trial" component={TimeTrial} />
+            <ProtectedRoute path="/practice" component={Practice} />
+            <ProtectedRoute path="/leaderboard" component={Leaderboard} />
+            <ProtectedRoute path="/top-users" component={TopUsers} />
+            <ProtectedRoute path="/progress" component={Progress} />
+            <ProtectedRoute path="/messages" component={Messages} />
+            <ProtectedRoute path="/settings" component={Settings} />
+            <ProtectedRoute path="/challenge/create" component={CreateChallenge} />
+            <AdminProtectedRoute path="/admin" component={Admin} />
+            <Route component={NotFound} />
+          </Switch>
+        </Drawer>
+      </Router>
+    </ThemeProvider>
   );
 };
 

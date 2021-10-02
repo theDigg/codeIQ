@@ -8,7 +8,7 @@ const StyledReflexContainer = styled(ReflexContainer)`
 
 export default ({ topLeft, topRight, bottomLeft, bottomRight }) => {
   return (
-    <StyledReflexContainer orientation="vertical" style={{ height: 'calc(100vh - 48px)' }}>
+    <StyledReflexContainer orientation="vertical" style={{ height: 'calc(100vh - 64px)' }}>
       <ReflexElement>
         <StyledReflexContainer orientation="horizontal">
           <ReflexElement propagateDimensionsRate={200} propagateDimensions={true} flex={0.5}>
