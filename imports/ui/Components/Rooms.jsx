@@ -5,8 +5,6 @@ import { Meteor } from 'meteor/meteor';
 import Rooms from '../../db/rooms';
 import { useDispatch } from 'react-redux';
 import { setRooms, setCurrentRoom } from '../features/rooms/roomsSlice';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 
 const createRoom = (roomId) => Meteor.call('rooms.insert', roomId);
 const deleteRoom = (roomId) => Meteor.call('rooms.remove', roomId);
@@ -31,31 +29,8 @@ const ScrollContainer = styled.div`
   }
 `;
 
-const roomsQuery = gql`
-  query Rooms {
-    rooms {
-      _id
-      title
-      started
-      createdAt
-      lobby
-      userId
-    }
-  }
-`;
-
-const roomMutation = gql`
-  mutation AddRoom($title: String!) {
-    addRoom(title: $title) {
-      _id
-    }
-  }
-`;
-
 export default () => {
   const dispatch = useDispatch();
-  const { data, loading, refetch } = useQuery(roomsQuery);
-  const [addRoomMutation] = useMutation(roomMutation);
   const { rooms, isLoading } = useTracker(() => {
     const handler = Meteor.subscribe('rooms');
     if (!handler.ready()) {
@@ -72,15 +47,7 @@ export default () => {
     e.preventDefault();
 
     if (!roomName) return;
-
-    addRoomMutation({
-      variables: {
-        title: roomName,
-      },
-      refetchQueries: () => ['Rooms'],
-    })
-      .then(() => console.log('Room added with success'))
-      .catch((e) => console.error('Error trying to add room', e));
+    createRoom(roomName)
 
     setRoomName('');
   };

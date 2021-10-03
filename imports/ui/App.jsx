@@ -17,7 +17,7 @@ import Battle from './pages/Battle';
 import Golf from './pages/Golf';
 import Duel from './pages/Duel';
 import TimeTrial from './pages/TimeTrial';
-import Practice from './pages/Practice';
+// import Practice from './pages/Practice';
 import Leaderboard from './pages/Leaderboard';
 import Progress from './pages/Progress';
 import TopUsers from './pages/TopUsers';
@@ -65,7 +65,7 @@ const App = () => {
             <ProtectedRoute path="/golf" component={Golf} />
             <ProtectedRoute path="/duel" component={Duel} />
             <ProtectedRoute path="/time-trial" component={TimeTrial} />
-            <ProtectedRoute path="/practice" component={Practice} />
+            {/* <ProtectedRoute path="/practice" component={Practice} /> */}
             <ProtectedRoute path="/leaderboard" component={Leaderboard} />
             <ProtectedRoute path="/top-users" component={TopUsers} />
             <ProtectedRoute path="/progress" component={Progress} />

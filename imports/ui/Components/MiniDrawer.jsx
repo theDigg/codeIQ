@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Roles } from 'meteor/alanning:roles';
-import { Link, Switch, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -29,7 +29,7 @@ import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import TerrainIcon from '@mui/icons-material/Terrain';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TuneIcon from '@mui/icons-material/Tune';
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+// import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import FingerprintIcon from '@mui/icons-material/Fingerprint';
 import AssignmentIcon from '@mui/icons-material/Assignment';
@@ -215,14 +215,6 @@ export default function MiniDrawer({ children }) {
                   <HourglassEmptyIcon fontSize="medium" />
                 </ListItemIcon>
                 <ListItemText primary="Time Trial" />
-              </ListItem>
-            </StyledLink>
-            <StyledLink to="/practice">
-              <ListItem button key="practice">
-                <ListItemIcon>
-                  <FitnessCenterIcon fontSize="medium" />
-                </ListItemIcon>
-                <ListItemText primary="Practice" />
               </ListItem>
             </StyledLink>
             <Divider />

@@ -23,7 +23,7 @@ export default function BattlePage({ user }) {
     Meteor.call('rooms.editSolution', room._id, value);
   }
 
-  const opponents = room?.lobby.filter(id => id !== user._id)
+  const opponents = room?.lobby?.filter(id => id !== user._id)
   const solution1 = room?.solutions?.[opponents[0]]
   const solution2 = room?.solutions?.[opponents[1]];
 

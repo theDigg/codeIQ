@@ -59,10 +59,13 @@ export default function GolfPage({ user }) {
   useTracker(() => {
     let challenges = ChallengesCollection.find({}).fetch();
     dispatch(setChallenges(challenges));
+    if (!challenge) {
+      dispatch(setChallenge(challenges[0]))
+    }
   }, []);
 
   useTracker(() => {
-    let challengeChoice = ChallengesCollection.findOne({ _id: challenge.id });
+    let challengeChoice = ChallengesCollection.findOne({ _id: challenge._id });
     dispatch(setChallenge(challengeChoice));
   }, []);
 
@@ -91,30 +94,25 @@ export default function GolfPage({ user }) {
         <Windows
           topLeft={<ChallengeList challenges={challenges} handleChallengeClick={handleChallengeClick} />}
           topRight={myEditor}
-          bottomLeft={<Results onSubmit={handleSubmitChallenge} />}
-          bottomRight={<TestResults console={results?.consoleOutput && results.consoleOutput} tests={results?.tests && results.tests} />}
+          bottomLeft={<div/>}
+          bottomRight={
+            <TestResults
+              console={results?.consoleOutput && results.consoleOutput}
+              tests={results?.tests && results.tests}
+              onSubmit={handleSubmitChallenge}
+            />
+          }
         />
       }
     </div>
   );
 }
 
-const Results = ({ onSubmit }) => {
-  return (
-    <div>
-      <h1> Results </h1>
-      <Button variant="contained" color="primary" sx={{ m: 1 }} onClick={() => onSubmit()}>
-        Submit
-      </Button>
-    </div>
-  );
-};
-
 const Challenge = ({ challenge, handleChallengeClick }) => {
   return (
     <div>
       <Button variant="contained" color="primary" sx={{ m: 1 }} onClick={() => handleChallengeClick(challenge)}>
-        {challenge.name}
+        {challenge?.name}
       </Button>
     </div>
   );
@@ -122,23 +120,8 @@ const Challenge = ({ challenge, handleChallengeClick }) => {
 
 const ChallengeList = ({ challenges, handleChallengeClick }) => (
   <div>
-    {challenges.map((challenge) => (
+    {challenges?.map((challenge) => (
       <Challenge key={challenge._id} challenge={challenge} handleChallengeClick={handleChallengeClick} />
     ))}
   </div>
-);
-
-const Test = ({ test, output }) => {
-  const classes = useStyles();
-  return (
-    <div>
-      <Button sx={{ m: 1 }}>
-        Test {test}: {`${output}`}
-      </Button>
-    </div>
-  );
-};
-
-const TestList = ({ consoleOutput }) => (
-  <div>{consoleOutput && Object.values(consoleOutput)?.map(({ test, output }, i) => <Test key={i} test={test} output={output} />)}</div>
 );

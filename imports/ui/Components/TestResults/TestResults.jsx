@@ -31,7 +31,7 @@ const classes = {
   },
 };
 
-export default function TestResults({ console, tests }) {
+export default function TestResults({ console, tests, onSubmit }) {
   const [expanded, setExpanded] = React.useState(false);
   const { challenge } = useSelector((state) => state.golf);
 
@@ -43,6 +43,7 @@ export default function TestResults({ console, tests }) {
     challenge &&
     challenge.io.tests.map((testInfo, i) => (
       <Accordion
+        key={testInfo.id}
         expanded={expanded === `test${i}`}
         onChange={handleChange(`test${i}`)}
         sx={{ border: `1px solid ${tests && tests[testInfo.id].passed ? 'green' : 'red'}`, margin: '5px' }}
@@ -74,23 +75,23 @@ export default function TestResults({ console, tests }) {
       <Divider />
       {console &&
         Object.keys(console).map((testNum) => (
-          <>
+          <div key={testNum}>
             <ListItem dense={true}>
               <ListItemText primary={`----------- TEST ${testNum} -----------`} />
             </ListItem>
-            {console[testNum].map((output) => (
-              <ListItem dense={true} sx={{ color: `${tests[testNum].passed ? 'green' : 'red'}` }}>
+            {console[testNum].map((output, i) => (
+              <ListItem dense={true} sx={{ color: `${tests[testNum].passed ? 'green' : 'red'}` }} key={i}>
                 <ListItemText primary={JSON.stringify(output)} />
               </ListItem>
             ))}
-          </>
+          </div>
         ))}
     </List>
   );
 
   return (
     <Box sx={{ width: '100%', minWidth: '300px' }}>
-      <TestTabs custom={customOutput} raw={rawOutput} />
+      <TestTabs custom={customOutput} raw={rawOutput} onSubmit={onSubmit} />
     </Box>
   );
 }

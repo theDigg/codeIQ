@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { WebApp } from 'meteor/webapp';
-import { Server } from 'socket.io';
+// import { WebApp } from 'meteor/webapp';
+// import { Server } from 'socket.io';
 import { Accounts } from 'meteor/accounts-base';
 import Challenges from '/imports/db/Challenges';
 import RoomsCollection from '/imports/db/rooms';
@@ -9,9 +9,6 @@ import '/imports/api/challengeMethods';
 import '/imports/api/roomMethods';
 import '/imports/api/roomPublications';
 import './service-config';
-import '/imports/api/graphql';
-import './monti';
-import './testPiston';
 
 const insertRoom = (title, user, url) => {
   RoomsCollection.insert({
@@ -23,7 +20,7 @@ const insertRoom = (title, user, url) => {
   });
 };
 
-const { httpServer } = WebApp;
+// const { httpServer } = WebApp;
 
 var users = [
   { name: 'Normal User', email: 'normal@example.com', roles: [] },
@@ -33,11 +30,11 @@ var users = [
 ];
 
 Meteor.startup(() => {
-  const io = new Server(httpServer);
-  io.on('connection', function (socket) {
-    console.log('new socket client', socket.id);
-    socket.emit('test', 'Hello');
-  });
+  // const io = new Server(httpServer);
+  // io.on('connection', function (socket) {
+  //   console.log('new socket client', socket.id);
+  //   socket.emit('test', 'Hello');
+  // });
   if (Meteor.isServer) {
     Meteor.publish(null, function () {
       if (this.userId) {

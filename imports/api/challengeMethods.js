@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import SimpleSchema from 'simpl-schema';
+// import SimpleSchema from 'simpl-schema';
 import Challenges from '../db/Challenges';
 import piston from 'piston-client';
 import * as utils from '../utils/stringUtils';
@@ -11,8 +11,8 @@ import * as utils from '../utils/stringUtils';
     'Content-Type': 'application/json'
   },
 */
-const client = piston({ server: 'http://localhost:2000' }); // If running the piston API locally
-// const client = piston({ server: 'https://emkc.org' });
+// const client = piston({ server: 'http://localhost:2000' }); If running the piston API locally
+const client = piston({ server: 'https://emkc.org' });
 
 const parseTests = (output) => {
   let tests = {};

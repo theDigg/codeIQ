@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 
 const StyledReflexContainer = styled(ReflexContainer)`
-  background: #1d1d1d;
+  /* background: #1d1d1d; */
 `;
 
 export default ({ topLeft, topRight, bottomLeft, bottomRight }) => {
